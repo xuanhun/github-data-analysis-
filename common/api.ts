@@ -1,7 +1,8 @@
 import axios from "axios";
 import utils from "./utils";
 
-const DEFAULT_PER_PAGE = 30;
+
+const DEFAULT_PER_PAGE = 100;
 
 namespace api {
   export async function getRepoStargazers(
@@ -26,12 +27,14 @@ namespace api {
     const { data } = await axios.get(`https://api.github.com/repos/${repo}`, {
       headers: {
         Accept: "application/vnd.github.v3.star+json",
-        Authorization: token ? `token ${token}` : "",
+        Authorization:  token ? `token ${token}` : "",
       },
     });
 
     return data.stargazers_count;
   }
+
+
 
   export async function getRepoStarRecords(
     repo: string,

@@ -1,39 +1,25 @@
 <div align="center">
+This project is forked from <b>star-history/star-history</b> and upgraded. It will not merge code back to the original project.
 
-🧩 [**Also available as a Chrome extension**](https://chrome.google.com/webstore/detail/star-history/iijibbcdddbhokfepbblglfgdglnccfn)
+# :sparkles: gitdata analysis :sparkles:
 
-# :sparkles: Star History :sparkles:
-
-[**star-history.com**](https://star-history.com), **the missing GitHub star history graph of GitHub repos.**
+[**gitdata.xuanhun520.com**](https://gitdata.xuanhun520.com), **provides missing data statistics and visualization capabilities for GitHub repositories, such as star history chart functionality.**
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=star-history/star-history&type=Date&theme=dark" />
-  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=star-history/star-history&type=Date" />
-  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=star-history/star-history&type=Date" />
+  <source media="(prefers-color-scheme: dark) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
+  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
 </picture>
 
-👆 **THIS** is a **`live`** chart created with the following html: 👇
+👆 **THIS** is a **`live`** chart created with the following HTML code: 👇
 
 <div align="left">
 
 ```html
 <picture>
-  <source
-    media="(prefers-color-scheme: dark)"
-    srcset="
-      https://api.star-history.com/svg?repos=star-history/star-history&type=Date&theme=dark
-    "
-  />
-  <source
-    media="(prefers-color-scheme: light)"
-    srcset="
-      https://api.star-history.com/svg?repos=star-history/star-history&type=Date
-    "
-  />
-  <img
-    alt="Star History Chart"
-    src="https://api.star-history.com/svg?repos=star-history/star-history&type=Date"
-  />
+  <source media="(prefers-color-scheme: dark)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
+  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
 </picture>
 ```
 
@@ -43,50 +29,36 @@
 
 ---
 
-## 💜 Sponsors
-
-### Bytebase
-
-[Bytebase](https://bytebase.com?source=star-history) is an open source, web-based database schema change and version control tool for teams. Supporting MySQL, PostgreSQL, Oracle, MongoDB, Redis, Snowflake, ClickHouse, TiDB, Google Spanner.
-
-<a href="https://bytebase.com?source=star-history"><img src="https://raw.githubusercontent.com/star-history/star-history/main/public/sponsors/bytebase/landing.webp" /></a>
-
-### Dify
-
-[Dify](https://dify.ai/?utm_source=star-history) is an open source LLMOps platform that helps developers build AI applications more simply and quickly. Its core idea is to define various aspects of AI applications, including Prompts, Contexts, and Plugins, through declarative YAML files.
-
-<a href="https://dify.ai/?utm_source=star-history"><img src="https://raw.githubusercontent.com/star-history/star-history/main/public/sponsors/dify/landing.webp" /></a>
-
 ## ✨ Features
 
-- **Unique** **`sketch xkcd`** feeling **chart**;
-- **One-click** generation of **high-quality** image for chart;
-- Support **multiple chart view** mode **`based on date or timeline`**;
-- **Embed** the **real-time chart** into **`GitHub readme or other websites`** **(like the one we embed here on the top)**
+- Based on [VChart](https://github.com/VisActor/VChart).
+- Support viewing detailed data
+- **One-click** generation of **high-quality** chart images;
+- Support **multiple chart view** modes, **`based on date or timeline`**;
+- **Embed** **real-time charts** into **`GitHub readme or other websites`** **(like the example we embedded at the top)**;
 - And **various** useful **functions**:
-  - toggle **repo visibility**;
-  - **shortcut** to input repo;
-  - **share** on **`Twitter`** **quickly**;
-  - **support** input **multiple repos**;
-  - ...waiting **for you** to **find out!**
+  - Toggle **repository visibility**;
+  - **Shortcut** to input repository name;
+  - **Quick share** to **`social networks`**;
+  - **Support** input **multiple repositories**;
+  - ...more features waiting for you to **discover!**
 
 ## 🌠 Screenshots
 
-<a href="https://star-history.com"><img width="800px" src="https://user-images.githubusercontent.com/24653555/154391264-312b448b-f851-41bf-bb8d-4c21ec6795b6.gif" />
+<a href="https://gitdata.xuanhun520.com"><img width="800px" src="https://user-images.githubusercontent.com/24653555/154391264-312b448b-f851-41bf-bb8d-4c21ec6795b6.gif" />
 </a>
 
-### 🧩 [Free chrome extension](https://chrome.google.com/webstore/detail/star-history/iijibbcdddbhokfepbblglfgdglnccfn)
 
-<a href="https://chrome.google.com/webstore/detail/star-history/iijibbcdddbhokfepbblglfgdglnccfn"><img width="800px" src="https://user-images.githubusercontent.com/24653555/154391326-61b65d8f-3f9f-4432-b773-5988be75b0ea.png" /></a>
 
 ## 🏗 Development
 
-**`Star-history`** is built using a **modern tech stack**: **`Vue`** + **`Vite`** + **`TailwindCSS`**.
+**`Star-history`** is built using a **modern tech stack**: **`Vue`** + **`Vite`** + **`TailwindCSS`** + **`@Visactor/VChart`**.
 
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/en/download/)
 - [pnpm](https://pnpm.io/)
+- [MongoDB](https://www.mongodb.com/)
 
 ### Install dependencies
 
@@ -94,9 +66,9 @@
 pnpm i
 ```
 
-### Start with your interest
+### Start Development
 
-- **Main website** is the homepage of star-history with most of **useful features and blogs** about **`open source`**.
+- **Main website** is the homepage of gitdata, containing most **useful features and blogs** about **`VisActor open source`**.
 
   ```shell
   pnpm dev
@@ -104,19 +76,73 @@ pnpm i
 
   The website will be served at http://localhost:3000.
 
-- **Chrome extension** supports the **basic chart viewer** as a **free** additional product.
+- **API Server** is an **`experimental feature`**. It's mainly used to **generate chart `SVG` or `PNG`** image files that can be embedded into **`GitHub readme`**.
+
+  #### Prerequisites for API Server
+
+  - [MongoDB Community Server](https://www.mongodb.com/try/download/community) (for caching repository data)
+
+  #### Install MongoDB Community Server
+
+  **Note:** After changing the password, remember to update the connection string in your `.env` file or environment variables.
+
+  **Set Environment Variables:**
+
+  MongoDB configuration can be modified according to your actual situation.
 
   ```shell
-  pnpm build:ext
+  # Set MongoDB connection string
+  export MONGODB_URI="mongodb://[username]:[password]@localhost:27017/gitdata"
+  export MONGODB_DB_NAME="gitdata"
+  export MONGODB_COLLECTION_NAME="repo_cache"
   ```
 
-  Load the built `./dist` folder as **unpacked project** to chrome extensions page.
+  Or create a `.env` file in the `server` directory:
 
-- **API server** is an **`experimental feature`**. It's mainly used to **generate chart `SVG`** image file that can be embeded into **`GitHub readme`**.
+  ```env
+  MONGODB_URI=mongodb://xuanhun:xuanhun@localhost:27017/gitdata
+  MONGODB_DB_NAME=gitdata
+  MONGODB_COLLECTION_NAME=repo_cache
+  ```
+
+  #### Start API Server
 
   ```shell
   cd server
   pnpm i && pnpm dev
   ```
 
-  The API server will be running on http://localhost:8080.
+  The API server will be running on http://localhost:8080 (or https://localhost:8080 if HTTPS is enabled).
+
+  #### Token
+
+  The backend service requires your own GitHub token, placed in the `token.env` file.
+
+  ### Enable HTTPS Support
+
+  To enable HTTPS for the frontend:
+
+  1. **Generate SSL certificates** (for development):
+
+     ```shell
+     ./scripts/generate-ssl-cert.sh
+     ```
+
+     This will create self-signed certificates in the `certs/` directory.
+
+  2. **For Frontend (Vite)**:
+
+     The Vite dev server will automatically use HTTPS if certificates are found in `certs/` directory, or you can specify custom paths:
+
+     ```shell
+     export SSL_CERT_PATH=/path/to/cert.crt
+     export SSL_KEY_PATH=/path/to/key.key
+     pnpm dev
+     ```
+
+## Future Plans
+
+- Add more editing and annotation features
+- View and edit VChart code, export to VChart official editor
+- Generate star history animated videos (GIF)
+- More GitHub data statistics and analysis features

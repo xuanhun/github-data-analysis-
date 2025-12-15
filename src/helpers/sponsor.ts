@@ -18,25 +18,36 @@ interface Sponsor {
 
 // The list of current sponsors.
 const sponsors: Sponsor[] = [
-  // {
-  //   name: "Bytebase",
-  //   logo: utils.absolutifyLink("/sponsors/bytebase/logo.webp"),
-  //   landingImage: utils.absolutifyLink("/sponsors/bytebase/landing.webp"),
-  //   link: "https://bytebase.com?utm_source=star-history",
-  //   logoSlogan:
-  //     "Bytebase: Database DevOps and CI/CD for MySQL, PG, Oracle, SQL Server, Snowflake, CK, Mongo, Redis",
-  //   landingSlogan:
-  //     "Database DevOps and CI/CD for MySQL, PG, Oracle, SQL Server, Snowflake, CK, Mongo, Redis",
-  // },
+  
   {
-    name: "Dify",
-    logo: utils.absolutifyLink("/sponsors/dify/logo.webp"),
-    landingImage: utils.absolutifyLink("/sponsors/dify/landing.webp"),
-    link: "https://dify.ai/?utm_source=star-history",
+    name: "VChart",
+    logo: utils.absolutifyLink("/sponsors/VisActor/logo.svg"),
+    landingImage: utils.absolutifyLink("/sponsors/VisActor/landing.webp"),
+    link: "https://www.visactor.com/vchart",
     logoSlogan:
-      "Dify: The next-gen development platform. Create Assistants API and GPTs based on any LLMs.",
+      "VChart: Out-of-the-box multi-terminal charting library.",
     landingSlogan:
-      "The next-gen development platform. Create Assistants API and GPTs based on any LLMs.",
+      "Out-of-the-box multi-terminal charting library.",
+  },
+  {
+    name: "VChart",
+    logo: utils.absolutifyLink("/sponsors/VisActor/logo.svg"),
+    landingImage: utils.absolutifyLink("/sponsors/VisActor/landing.webp"),
+    link: "https://www.visactor.com/vtable",
+    logoSlogan:
+      "VTable: Automated multi-dimensional data analysis and presentation tool.",
+    landingSlogan:
+      "Automated multi-dimensional data analysis and presentation tool.",
+  },
+  {
+    name: "VMind",
+    logo: utils.absolutifyLink("/sponsors/VisActor/logo.svg"),
+    landingImage: utils.absolutifyLink("/sponsors/VisActor/landing.webp"),
+    link: "https://www.visactor.com/vmind",
+    logoSlogan:
+      "VMind: AI-driven data analysis and visualization tool.",
+    landingSlogan:
+      "AI-driven data analysis and visualization tool.",
   },
 ];
 

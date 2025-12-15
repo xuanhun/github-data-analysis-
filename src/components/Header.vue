@@ -1,5 +1,4 @@
 <template>
-  <TopBanner />
   <header
     class="w-full h-14 shrink-0 flex flex-row justify-center items-center bg-dark text-light"
   >
@@ -11,7 +10,7 @@
           class="h-full flex flex-row justify-center items-center px-3 hover:bg-zinc-800"
           to="/"
         >
-          <img class="w-7 h-auto" src="/icon.png" />
+          <img class="w-7 h-auto" src="/icon.svg" />
         </router-link>
         <router-link
           class="h-full flex flex-row justify-center items-center px-3 hover:bg-zinc-800"
@@ -26,21 +25,13 @@
           {{ token ? "Edit" : "Add" }} Access Token
         </span>
       </div>
-      <div class="hidden h-full md:flex flex-row justify-start items-center">
-        <a
-          href="https://www.bytebase.com?source=star-history"
-          target="_blank"
-          class="h-full flex flex-row justify-center items-center px-3 hover:bg-zinc-800"
-        >
-          <img class="h-6 mt-1 mr-2" src="/craft-by-bytebase.webp" />
-        </a>
-      </div>
+
       <div
         class="h-full hidden md:flex flex-row justify-end items-center space-x-1"
       >
         <a
           class="h-full flex flex-row justify-center items-center px-2 hover:bg-zinc-800"
-          href="https://twitter.com/StarHistoryHQ"
+          href="https://x.com/xuanhun1"
           target="_blank"
         >
           <i class="fab fa-twitter text-2xl text-blue-300"></i>
@@ -81,7 +72,7 @@
   >
     <router-link
       class="h-12 px-3 w-full flex flex-row justify-start items-center cursor-pointer font-semibold text-dark mr-2 hover:bg-gray-100 hover:text-blue-500"
-      to="/blog/how-to-use-github-star-history"
+      to="/blog/how-to-use-github-data-analysis"
     >
       📕 How to use this site
     </router-link>
@@ -94,9 +85,9 @@
     <span class="h-12 px-3 w-full flex flex-row justify-start items-center">
       <a
         class="github-button -mt-1"
-        href="https://github.com/star-history/star-history"
+        href="https://github.com/xuanhun/github-data-analysis-"
         data-show-count="true"
-        aria-label="Star star-history/star-history on GitHub"
+        aria-label="Star xuanhun/github-data-analysis- on GitHub"
         target="_blank"
       >
         Star
@@ -112,7 +103,7 @@
 <script lang="ts" setup>
 import { computed, reactive } from "vue";
 import useAppStore from "../store";
-import TopBanner from "./TopBanner.vue";
+
 import GitHubStarButton from "./GitHubStarButton.vue";
 import TokenSettingDialog from "./TokenSettingDialog.vue";
 

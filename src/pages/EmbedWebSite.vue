@@ -15,8 +15,8 @@
     <StarXYChart
       v-if="state.chartData"
       classname="w-full h-auto"
-      :data="state.chartData"
-      :chart-mode="state.chartMode"
+      :data="state.chartData as IDataType"
+      :theme="state.theme"
     />
   </a>
 </template>
@@ -24,7 +24,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from "vue";
 import { ChartMode, RepoStarData } from "../../types/chart";
-import { XYChartData } from "../../packages/xy-chart";
+import { IDataType } from "@visactor/vchart";
 import {
   convertStarDataToChartData,
   getReposStarData,
@@ -38,10 +38,11 @@ const toastWarn = (message: string) => {
 };
 
 interface State {
-  chartData: XYChartData | undefined;
+  chartData: IDataType | undefined;
   chartMode: ChartMode;
   isFetching: boolean;
   repos: string[];
+  theme: string;
 }
 
 const state = reactive<State>({
@@ -49,12 +50,13 @@ const state = reactive<State>({
   chartMode: "Date",
   isFetching: true,
   repos: [],
+  theme: "light",
 });
 const containerElRef = ref<HTMLDivElement | null>(null);
 const starHistoryLink = computed(() => {
-  return `https://star-history.com/#${state.repos.join("&")}&${
+  return `https://gitdata.xuanhun520.com/#${state.repos.join("&")}&${
     state.chartMode
-  }`;
+  }&theme=${state.theme}`;
 });
 
 onMounted(() => {
@@ -128,8 +130,7 @@ const fetchReposStarData = async (repos: string[], token: string) => {
       );
     });
     state.chartData = convertStarDataToChartData(
-      reposStarData,
-      state.chartMode
+      reposStarData
     );
   }
 };

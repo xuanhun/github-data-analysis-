@@ -33,11 +33,11 @@ const blogSectionList = [
       },
       {
         title: "📕 How to Use this Site",
-        path: "/blog/how-to-use-github-star-history",
+        path: "/blog/how-to-use-github-data-analysis",
       },
       {
         title: "⭐️ How to Get More Stars",
-        path: "/blog/playbook-for-more-github-stars",
+        path: "/blog/playbook-for-more-github-data-analysis",
       },
     ],
   },

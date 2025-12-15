@@ -4,16 +4,12 @@
     class="w-full h-auto origin-top-left min-w-600px flex flex-col justify-start items-start overflow-x-auto select-none"
     :class="`${classname}`"
   >
-    <svg
-      ref="svgElRef"
-      class="w-full h-full"
-      @click="handleSVGElementClick"
-    ></svg>
+   
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUpdated, ref } from "vue";
+import { onMounted, onUpdated, ref, PropType, toRaw } from "vue";
 // For customizing multi mode chart: base on create date or timeline, we have rewrited the chart.xkcd's XY chart with TypeScript.
 // Here are some reasons about this motivation.
 //
@@ -25,54 +21,61 @@ import { onMounted, onUpdated, ref } from "vue";
 // 1. Writing in native TypeScript;
 // 2. Easy to debug chart internal;
 // 3. Totally customizable.
-import XYChart, { XYChartData } from "../../../packages/xy-chart";
+import XYChart from "../../../packages/xy-chart";
 import { MIN_CHART_WIDTH } from "../../helpers/consts";
+import { IDataType } from "@visactor/vchart";
+
+
 
 const props = defineProps({
   classname: {
     type: String,
     default: "",
   },
-  data: {
-    type: Object as () => XYChartData,
+  data:  {
+    type: Object as PropType<IDataType>,
+    required: true,
   },
-  chartMode: {
+  theme: {
     type: String,
-    default: "Date",
+    default: "light",
   },
   timeFormat: String,
 });
 
 const chartContainerElRef = ref<HTMLDivElement>();
-const svgElRef = ref<SVGSVGElement>();
+const chartInstanceRef = ref<any>(null);
 
-const drawStarChart = (data: XYChartData) => {
-  if (svgElRef.value) {
-    svgElRef.value.innerHTML = "";
+// 暴露图表实例给父组件
+defineExpose({
+  getChartInstance: () => chartInstanceRef.value,
+});
 
-    XYChart(
-      svgElRef.value,
+const drawStarChart = (data: IDataType) => {
+  if (chartContainerElRef.value) {
+    chartContainerElRef.value.innerHTML = "";
+
+    const chart = XYChart(
+      chartContainerElRef.value,
       {
         title: "Star History",
-        xLabel: props.chartMode === "Timeline" ? "Timeline" : "Date",
+        xLabel: "Date",
         yLabel: "GitHub Stars",
-        data: {
-          datasets: data.datasets,
-        },
+        data: data,
         showDots: true,
-        transparent: false
-      },
-      {
-        xTickLabelType: props.chartMode === "Date" ? "Date" : "Number",
-        envType: "browser",
+        transparent: false,
+        theme: props.theme as "light" | "dark",
       }
     );
+    chartInstanceRef.value = chart;
+    chart.renderAsync();
   }
 };
 
 onMounted(() => {
   if (props.data) {
-    drawStarChart(props.data);
+    console.log(props.data);
+    drawStarChart(toRaw(props.data));
   }
 
   // Scale chart to a suitable mobile view.
@@ -94,11 +97,8 @@ onMounted(() => {
 
 onUpdated(() => {
   if (props.data) {
-    drawStarChart(props.data);
+    drawStarChart(toRaw(props.data));
   }
 });
 
-const handleSVGElementClick = () => {
-  // Maybe we can capture the clicked svg element to expand chart functions.
-};
 </script>

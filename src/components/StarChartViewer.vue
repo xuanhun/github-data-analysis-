@@ -1,86 +1,51 @@
 <template>
-  <div
-    ref="containerElRef"
-    class="relative w-full h-auto min-h-400px self-center max-w-3xl 2xl:max-w-4xl sm:p-4 pt-0"
-  >
-    <div
-      v-if="isFetching"
-      class="absolute w-full h-full flex justify-center items-center z-10 top-0"
-    >
+  <div ref="containerElRef" class="relative w-full h-auto min-h-400px self-center max-w-3xl 2xl:max-w-4xl sm:p-4 pt-0">
+    <div v-if="isFetching" class="absolute w-full h-full flex justify-center items-center z-10 top-0">
       <div class="absolute w-full h-full blur-md bg-white bg-opacity-80"></div>
       <i class="fas fa-spinner animate-spin text-4xl z-10"></i>
     </div>
-    <div
-      v-if="state.chartData"
-      class="absolute top-0 right-1 p-2 flex flex-row"
-    >
-      <div
-        class="flex flex-row justify-center items-center rounded leading-8 text-sm px-3 cursor-pointer z-10 text-dark select-none hover:bg-gray-100"
-        @click="handleToggleChartBtnClick"
-      >
-        <input
-          class="mr-2"
-          type="checkbox"
-          :checked="chartMode === 'Timeline'"
-        />
-        Align timeline
-      </div>
+
+    <div class="flex flex-row items-center gap-2">
+      <label for="theme">Theme</label>
+      <select id="theme" v-model="state.theme" class="w-[100px] border-2 border-blue-500 rounded" @change="handleThemeChange">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
     </div>
-    <StarXYChart
-      v-if="state.chartData"
-      classname="w-full h-auto mt-4"
-      :data="state.chartData"
-      :chart-mode="chartMode"
-    />
+    <StarXYChart v-if="state.chartData" ref="starChartRef" classname="w-full h-auto mt-4" :data="state.chartData"
+      :theme="state.theme" />
   </div>
-  <div
-    v-if="state.chartData"
-    class="relative mt-4 mb-4 w-full px-3 mx-auto max-w-4xl flex flex-row flex-wrap justify-between items-center"
-  >
-    <div class="flex flex-row justify-start items-center mb-2">
-      <a
-        class="h-full flex flex-row justify-center items-center leading-8 hover:opacity-80 underline underline-offset-2 mb-2 decoration-dark"
-        href="https://chrome.google.com/webstore/detail/iijibbcdddbhokfepbblglfgdglnccfn"
-        target="_blank"
-      >
-        <img class="w-5 h-auto mr-1" src="/icons/free.svg" />
-        <span class="text-dark">Get Chrome Extension</span>
-      </a>
-    </div>
+  <div v-if="state.chartData"
+    class="relative mt-4 mb-4 w-full px-3 mx-auto max-w-4xl flex flex-row flex-wrap justify-between items-center">
+  
     <div class="flex flex-row flex-wrap justify-end items-center mb-2">
       <button
         class="ml-2 mb-2 rounded leading-9 text-sm px-3 cursor-pointer border text-dark bg-gray-100 hover:bg-gray-200"
-        :class="state.isGeneratingImage ? 'bg-gray-200 cursor-wait' : ''"
-        @click="handleGenerateImageBtnClick"
-      >
+        :class="state.isGeneratingImage ? 'bg-gray-200 cursor-wait' : ''" @click="handleGenerateImageBtnClick">
         <i class="fas fa-download"></i>
         Image
       </button>
       <button
         class="ml-2 mb-2 rounded leading-9 text-sm px-3 cursor-pointer border text-dark bg-gray-100 hover:bg-gray-200"
-        @click="handleExportAsCSVBtnClick"
-      >
+        @click="handleExportAsSVGBtnClick">
         <i class="fas fa-download"></i>
-        CSV
+        SVG
       </button>
       <button
         class="ml-2 mb-2 rounded leading-9 text-sm px-3 cursor-pointer border text-dark bg-gray-100 hover:bg-gray-200"
-        @click="handleGenEmbedCodeDialogBtnClick"
-      >
+        @click="handleGenEmbedCodeDialogBtnClick">
         <i class="fas fa-code"></i>
         Embed
       </button>
       <button
         class="ml-2 mb-2 rounded leading-9 text-sm px-3 cursor-pointer border text-dark bg-gray-100 hover:bg-gray-200"
-        @click="handleCopyLinkBtnClick"
-      >
+        @click="handleCopyLinkBtnClick">
         <i class="far fa-copy"></i>
         Link
       </button>
       <button
         class="shadow-inner ml-2 mb-2 rounded leading-9 px-4 cursor-pointer bg-green-600 border border-transparent text-white hover:bg-green-700"
-        @click="handleShareToTwitterBtnClick"
-      >
+        @click="handleShareToTwitterBtnClick">
         <i class="relative -bottom-px fab fa-twitter"></i>
         Share on Twitter
       </button>
@@ -88,54 +53,34 @@
   </div>
   <EmbedMarkdownSection v-if="state.chartData"></EmbedMarkdownSection>
   <div class="grow"></div>
-  <div class="mb-12">
-    <iframe
-      src="https://embeds.beehiiv.com/2803dbaa-d8dd-4486-8880-4b843f3a7da6?slim=true"
-      data-test-id="beehiiv-embed"
-      height="52"
-      frameborder="0"
-      scrolling="no"
-      style="
-        margin: 0;
-        border-radius: 0px !important;
-        background-color: transparent;
-      "
-    ></iframe>
-  </div>
-  <BytebaseBanner v-if="state.chartData" />
-  <TokenSettingDialog
-    v-if="state.showSetTokenDialog"
-    @close="handleSetTokenDialogClose"
-  />
-  <GenerateEmbedCodeDialog
-    v-if="state.showGenEmbedCodeDialog"
-    @close="handleGenEmbedCodeDialogClose"
-  />
+
+
+  <TokenSettingDialog v-if="state.showSetTokenDialog" @close="handleSetTokenDialogClose" />
+  <GenerateEmbedCodeDialog v-if="state.showGenEmbedCodeDialog" @close="handleGenEmbedCodeDialogClose" />
   <!-- embed chart guide dialog -->
-  <EmbedChartGuideDialog
-    v-if="state.showEmbedChartGuideDialog"
-    @close="state.showEmbedChartGuideDialog = false"
-  />
+  <EmbedChartGuideDialog v-if="state.showEmbedChartGuideDialog" @close="state.showEmbedChartGuideDialog = false" />
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import useAppStore from "../store";
-import { XYChartData } from "../../packages/xy-chart";
+import { IDataType } from "@visactor/vchart";
+
 import utils from "../../common/utils";
-import { convertDataToChartData, getRepoData } from "../../common/chart";
+import { convertStarDataToChartData, getRepoData } from "../../common/chart";
 import api from "../../common/api";
 import toast from "../helpers/toast";
 import { RepoData } from "../../types/chart";
-import BytebaseBanner from "./SponsorView.vue";
+
 import StarXYChart from "./Charts/StarXYChart.vue";
 import TokenSettingDialog from "./TokenSettingDialog.vue";
 import GenerateEmbedCodeDialog from "./GenerateEmbedCodeDialog.vue";
 import EmbedMarkdownSection from "./EmbedMarkdownSection.vue";
 import EmbedChartGuideDialog from "./EmbedChartGuideDialog.vue";
+import { convertVChartToSvg } from '@visactor/vchart-svg-plugin';
+
 
 interface State {
-  chartMode: "Date" | "Timeline";
   repoCacheMap: Map<
     string,
     {
@@ -146,31 +91,31 @@ interface State {
       logoUrl: string;
     }
   >;
-  chartData: XYChartData | undefined;
+  chartData: IDataType | undefined;
   isGeneratingImage: boolean;
   showSetTokenDialog: boolean;
   showGenEmbedCodeDialog: boolean;
   showEmbedChartGuideDialog: boolean;
+  theme: string;
 }
 
 const state = reactive<State>({
-  chartMode: "Date",
   repoCacheMap: new Map(),
   chartData: undefined,
   isGeneratingImage: false,
+
   showSetTokenDialog: false,
   showGenEmbedCodeDialog: false,
   showEmbedChartGuideDialog: false,
+  theme: "light",
 });
 const store = useAppStore();
 
 const containerElRef = ref<HTMLDivElement | null>(null);
+const starChartRef = ref<InstanceType<typeof StarXYChart> | null>(null);
 
 const isFetching = computed(() => {
   return store.isFetching;
-});
-const chartMode = computed(() => {
-  return store.chartMode;
 });
 
 onMounted(() => {
@@ -232,7 +177,7 @@ const fetchReposData = async (repos: string[]) => {
   if (repoData.length === 0) {
     state.chartData = undefined;
   } else {
-    state.chartData = convertDataToChartData(repoData, chartMode.value);
+    state.chartData = convertStarDataToChartData(repoData);
   }
 };
 
@@ -245,27 +190,6 @@ const handleGenerateImageBtnClick = async () => {
   if (state.isGeneratingImage) {
     return;
   }
-
-  const svgElement = containerElRef.value
-    ?.querySelector("svg")
-    ?.cloneNode(true) as SVGSVGElement;
-  svgElement.querySelectorAll(".chart-tooltip-dot").forEach((d) => d.remove());
-  // convert images from url href to data url href
-  for (const i of Array.from(svgElement.querySelectorAll("image"))) {
-    const url = i.getAttribute("href");
-    if (url) {
-      const dataUrl = await utils.getBase64Image(url);
-      i.setAttribute("href", dataUrl);
-    }
-  }
-  svgElement.setAttribute("class", "fixed -z-10");
-  document.body.append(svgElement);
-
-  if (!svgElement || !containerElRef.value) {
-    toast.warn("Chart element not found, please try later");
-    return;
-  }
-
   state.isGeneratingImage = true;
 
   let destoryGeneratingToast = () => {
@@ -282,80 +206,97 @@ const handleGenerateImageBtnClick = async () => {
   }, 2000);
 
   try {
-    // Get image's width and height from the container, because the svg's width is set to 100%
-    const { width: imgWidth, height: imgHeight } =
-      containerElRef.value.getBoundingClientRect();
-    const canvas = document.createElement("canvas");
-    const scale = Math.floor(window.devicePixelRatio * 2);
-    canvas.width = (imgWidth + 20) * scale;
-    canvas.height = (imgHeight + 30) * scale;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      toast.warn("Get canvas context failed.");
+    // 获取图表实例
+    const chartInstance = starChartRef.value?.getChartInstance();
+    if (!chartInstance) {
+      toast.warn("Chart not ready");
+      state.isGeneratingImage = false;
+      destoryGeneratingToast();
       return;
     }
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // draw chart image
-    const chartDataURL = utils.convertSVGToDataURL(svgElement);
-    const chartImage = new Image();
-    chartImage.src = chartDataURL;
-    await utils.waitImageLoaded(chartImage);
-    ctx.drawImage(
-      chartImage,
-      10 * scale,
-      10 * scale,
-      imgWidth * scale,
-      imgHeight * scale
-    );
 
+
+    // 获取图片的 data URL
+    const dataURL = await chartInstance.getDataURL();
+
+    // 将 data URL 转换为 Blob
+    const response = await fetch(dataURL);
+    const blob = await response.blob();
+
+    // 创建 ObjectURL
+    const objectURL = URL.createObjectURL(blob);
+
+    // 创建下载链接并自动下载
     const link = document.createElement("a");
-    link.download = `star-history-${utils.getDateString(
-      Date.now(),
-      "yyyyMMdd"
-    )}.png`;
-    link.href = canvas.toDataURL();
+    link.href = objectURL;
+    link.download = `star-history-${new Date().getTime()}.png`;
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
+
+    // 清理 ObjectURL
+    setTimeout(() => {
+      URL.revokeObjectURL(objectURL);
+    }, 100);
+
+    toast.succeed("Image downloaded successfully");
     state.isGeneratingImage = false;
     destoryGeneratingToast();
-    toast.succeed("Image Downloaded");
-  } catch (error) {
-    console.error(error);
-    toast.error("Generate image failed");
+  } catch (error: any) {
+    console.error("Failed to generate image:", error);
+    toast.warn(error.message || "Failed to generate image");
+    state.isGeneratingImage = false;
+    destoryGeneratingToast();
   }
-  svgElement.remove();
 };
 
-const handleExportAsCSVBtnClick = () => {
+const handleExportAsSVGBtnClick = () => {
   let CSVContent = "";
-  for (const repo of store.repos) {
-    const records = state.repoCacheMap.get(repo)?.starData;
-    if (records) {
-      const temp: any[] = [];
-      for (const i of records) {
-        temp.push([repo, new Date(i.date), i.count]);
-      }
-      CSVContent += temp
-        .map((item) =>
-          typeof item === "string" && item.indexOf(",") >= 0
-            ? `"${item}"`
-            : String(item)
-        )
-        .join("\n");
-      CSVContent += "\n";
-    }
-  }
+  state.isGeneratingImage = true;
 
-  const encodedUri = encodeURI("data:text/csv;charset=utf-8," + CSVContent);
+  let destoryGeneratingToast = () => {
+    // do nth
+  };
+  setTimeout(() => {
+    if (state.isGeneratingImage) {
+      const cbs = toast.warn(
+        `<i class="fas fa-spinner animate-spin text-2xl mr-3"></i>Generating SVG`,
+        -1
+      );
+      destoryGeneratingToast = cbs.destory;
+    }
+  }, 2000);
+  try {
+    // 获取图表实例
+    const chartInstance = starChartRef.value?.getChartInstance();
+    if (!chartInstance) {
+      toast.warn("Chart not ready");
+      state.isGeneratingImage = false;
+      destoryGeneratingToast();
+      return;
+    }
+    const svg = convertVChartToSvg(chartInstance);
+    const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
+    const svgUrl = URL.createObjectURL(svgBlob);
   const link = document.createElement("a");
   link.download = `star-history-${utils.getDateString(
     Date.now(),
     "yyyyMMdd"
-  )}.csv`;
-  link.href = encodedUri;
+  )}.svg`;
+  link.href = svgUrl;
   link.click();
-  toast.succeed("CSV Downloaded");
+  toast.succeed("SVG Downloaded");
+  } catch (error: any) {
+    console.error("Failed to export SVG:", error);
+    toast.warn(error.message || "Failed to export SVG");
+    state.isGeneratingImage = false;
+  }finally{
+    state.isGeneratingImage = false;
+    destoryGeneratingToast();
+  }
+
+
 };
 
 const handleShareToTwitterBtnClick = async () => {
@@ -380,10 +321,9 @@ const handleShareToTwitterBtnClick = async () => {
 
     let starText = "";
     if (starCount > 0) {
-      starText = `${
-        (starCount < 1000 ? starCount : (starCount / 1000).toFixed(1) + "K") +
+      starText = `${(starCount < 1000 ? starCount : (starCount / 1000).toFixed(1) + "K") +
         " ⭐️ "
-      }`;
+        }`;
     }
     text = `${starText}Thank you! 🙏%0A${starhistoryLink}%0A%0A`;
   } else {
@@ -409,12 +349,13 @@ const handleGenEmbedCodeDialogClose = () => {
   state.showGenEmbedCodeDialog = false;
 };
 
-const handleToggleChartBtnClick = () => {
-  store.setChartMode(chartMode.value === "Date" ? "Timeline" : "Date");
-  fetchReposData(store.repos);
-};
 
 const handleSetTokenDialogClose = () => {
   state.showSetTokenDialog = false;
+};
+
+const handleThemeChange = (event: Event) => {
+  state.theme = (event.target as HTMLSelectElement).value;
+  store.setTheme(state.theme);
 };
 </script>

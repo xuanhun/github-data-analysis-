@@ -44,7 +44,15 @@ namespace utils {
       } catch (error: unknown) {
         console.warn("Copy to clipboard failed.", error);
       }
-    } else {
+    } 
+    else if (document.queryCommandSupported("copy")) {
+      try {
+        document.execCommand("copy", true, text);
+      } catch (error: unknown) {
+        console.warn("Copy to clipboard failed.", error);
+      }
+    }
+    else {
       console.warn("Copy to clipboard failed, methods not supports.");
     }
   }

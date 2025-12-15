@@ -1,7 +1,13 @@
+# Disclaimer
+
+> **Important Notice:** This application is based on [star-history/star-history](https://github.com/star-history/star-history) and has been modified and upgraded. We will continue to add more data analysis features. We express our sincere gratitude to the original authors! This document has also been modified and improved based on the original repository's documentation.
+
+---
+
 # Add a live star-history chart to your GitHub README
 
 ![star-history-svg-example](/blog/assets/star-history-svg-example.png)
-Now we support embedding a live star history chart into your GitHub README.  Above is the screenshot from our own [GitHub start history repo](https://github.com/star-history/star-history).
+Now we support embedding a live star history chart into your GitHub README.  Above is the screenshot from our own [GitHub data analysis](https://github.com/xuanhun/github-data-analysis-).
 
 This feature is quite handy.  A snippet would appear after querying the repository from our star-history.com main page; the only thing you need to do is simply copy that snippet into your GitHub README markdown file.
 ![star-history-embed-block](/blog/assets/star-history-embed-block.png)
@@ -21,7 +27,7 @@ Because GitHub API imposes a strict rate limit on the anonymous callers, we need
 
 ### Step-to-step guide to use `iframe` embed
 
-1. Open [star-history.com](https://star-history.com) and query for a repository;
+1. Open [gitdata.xuanhun520.com](https://gitdata.xuanhun520.com/) and query for a repository;
 
 2. Click the `Embed` button below the chart;
 
@@ -37,26 +43,11 @@ The iframe-based embed block is a decent improvement, while it still has some fl
 1. One commonly used case is to embed the GitHub star-history chart into the repository README file, so that it can be displayed on the repo's front page. However, the GitHub markdown flavor disallows rendering `<iframe />`, which makes it impossible to directly embed star-history charts there.
 2. We require users to provide their personal access tokens.  Though star-history never stores the token on our own server (we don't have a server at all), the token itself could be found if someone views the webpage source code.  This limits the usage since it's not fully secure unless adding the chart to a trusted platform, i.e. the internal dashboard of a team.
 
-### Inspiration
 
-We noticed that many open source projects have badges on their README
-![github-badges](/blog/assets/github-badges.png)
-After thorough research, we figured that those badges are dynamically generated SVG images.
-
-Coincidentally, star-history also generates the SVG chart image.  If we can return this SVG image by a link, then we can achieve a similar result as those generated badges.
-
-### Implementation
-
-star-history has always been a single-page application (SPA) without backend code. In order to offer this feature, we have to add the backend logic to serve the image request. To reuse the SVG generation code, we choose nodejs to create a service returning the live star history chart SVG.
-
-To avoid GitHub request rate limit, we create a token pool for polling requests. Those tokens are donated by our community members. If you would like to donate one, please follow this guide: [Donate GitHub Personal Access Token for star-history.com](https://github.com/star-history/star-history/wiki/Donate-your-GitHub-Personal-Access-Token)
-
-This is an example link to get the live SVG image for our star-history project: [https://api.star-history.com/svg?repos=star-history/star-history](https://api.star-history.com/svg?repos=star-history/star-history)
-![star-history-api-svg](/blog/assets/star-history-api-svg.png)
 
 ### Step-to-step guide to add the chart to your GitHub README
 
-1. Open [star-history.com](https://star-history.com) and query for a repository;
+1. Open [gitdata.xuanhun520.com](https://gitdata.xuanhun520.com) and query for a repository;
 
 2. Scroll the page below the action buttons;
    ![embed-chart-with-svg](/blog/assets/embed-chart-with-svg.png)
@@ -66,24 +57,14 @@ This is an example link to get the live SVG image for our star-history project: 
 
 5. Everything is done. 😎
 
-## Running on [render](http://render.com)
-
-The existing star-history frontend is a static site and is running on [render.com](http://render.com/).  As you can see, we have added the API server which is a Web Service type serving the live star history SVG image request.
-![render-overview](/blog/assets/render-overview.png)
-Here is the render's monitoring view and it's been running fine so far
-![render-usage](/blog/assets/render-usage.png)
 
 ## Conclusion
 
 We provide two ways to embed the real-time star history chart into the web pages.
 
 - If you want to put an auto-sizeable and interactive chart on your private network, you should try the embedded chart with `<iframe />`.
-- If you want to show a static chart with update-to-date star history data to the public, such as putting it on the GitHub repository README, you should use the image link such as `https://api.star-history.com/svg?repos=star-history/star-history&type=Date`
+- If you want to show a static chart with update-to-date star history data to the public, such as putting it on the GitHub repository README, you should use the image link such as `https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date&theme=dark`
 
 ---
 
-Check out examples below of using SVG embed charts in GitHub repository README and organization README.
 
-- [https://github.com/star-history/star-history#star-history](https://github.com/star-history/star-history#star-history)
-- [https://github.com/bytebase/bytebase#star-history](https://github.com/bytebase/bytebase#star-history)
-- [https://github.com/bytebase](https://github.com/bytebase)

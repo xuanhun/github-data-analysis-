@@ -4,13 +4,13 @@
     :class="state.hide && '!hidden'"
   >
     <div class="w-full flex flex-row justify-between items-center mb-2">
-      <span class="text-xs text-gray-400">Sponsors (random order)</span>
+      <span class="text-xs text-gray-400">Sponsors</span>
       <i
         class="fas fa-times text-xs text-gray-400 cursor-pointer hover:text-gray-500"
         @click.prevent="handleCloseButtonClick"
       ></i>
     </div>
-    <template v-for="sponsor in randomSponsors" :key="sponsor.name">
+
       <a
         :href="sponsor.link"
         class="bg-gray-50 p-2 rounded w-full flex flex-col justify-center items-center mb-2 text-zinc-600 hover:opacity-80 hover:text-blue-600 hover:underline"
@@ -23,7 +23,7 @@
         />
         <span class="text-xs mt-2">{{ sponsor.logoSlogan }}</span>
       </a>
-    </template>
+   
     <a
       href="mailto:star@bytebase.com?subject=I'm interested in sponsoring star-history.com"
       target="_blank"
@@ -37,6 +37,8 @@
 import { reactive } from "vue";
 import { randomSponsors } from "../helpers/sponsor";
 
+//随机取一个sponsor
+const  sponsor = randomSponsors[0];
 const state = reactive({
   hide: false,
 });

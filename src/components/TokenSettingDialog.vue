@@ -48,6 +48,16 @@
           , and paste it into the textbox below (no scope to your personal data
           is needed)
         </p>
+        <p>
+          For current page,we do not  store the token in the server, it will be stored in your local storage. 
+        </p>
+        <br />
+        <p class="text-sm text-red-600">
+        We need  more tokens to avoid GitHub API rate limit for the server api. If you would like to donate one, please follow this guide: 
+        
+        <a href="https://github.com/xuanhun/github-data-analysis-/blob/main/donate-token.md" class="text-blue-500">Donate GitHub Personal Access Token for gitdata.xuanhun520.com</a>
+        
+        </p>
         <br />
         <p class="font-bold">
           Access Token (will be stored in your local storage)

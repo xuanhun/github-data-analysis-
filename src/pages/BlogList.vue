@@ -3,7 +3,7 @@
     <Header />
     <div class="w-full h-auto grow lg:grid lg:grid-cols-[256px_1fr_256px]">
       <div class="w-full hidden lg:block">
-        <HighlightBlogSection />
+        <!-- <HighlightBlogSection /> -->
       </div>
       <div class="w-full flex flex-col justify-start items-center">
         <section
@@ -13,22 +13,9 @@
             class="mt-12 p-8 text-4xl font-bold text-dark"
             style="font-family: 'xkcd'"
           >
-            Star History Blog
+            GitHub Data Analysis Blog
           </p>
-          <div class="mb-4">
-            <iframe
-              src="https://embeds.beehiiv.com/2803dbaa-d8dd-4486-8880-4b843f3a7da6?slim=true"
-              data-test-id="beehiiv-embed"
-              height="52"
-              frameborder="0"
-              scrolling="no"
-              style="
-                margin: 0;
-                border-radius: 0px !important;
-                background-color: transparent;
-              "
-            ></iframe>
-          </div>
+     
           <div
             v-if="state.isLoading"
             class="grow w-full flex flex-col justify-center items-center"
@@ -166,9 +153,9 @@ import { onMounted, reactive } from "vue";
 import utils from "../../common/utils";
 import Footer from "../components/Footer.vue";
 import Header from "../components/Header.vue";
-import BytebaseBanner from "../components/SponsorView.vue";
+
 import SponsorBanner from "../components/SponsorStaticBanner.vue";
-import HighlightBlogSection from "../components/HighlightBlogSection.vue";
+// import HighlightBlogSection from "../components/HighlightBlogSection.vue";
 
 interface State {
   isLoading: boolean;
@@ -183,14 +170,24 @@ const state = reactive<State>({
 });
 
 onMounted(async () => {
-  const res = await fetch("/blog/data.json");
-  const rawBlogList = (await res.json()) as Blog[];
+ 
+  const rawBlogList = [
+    {
+      title: "Add a live star history chart to your GitHub README",
+      author: "xuanhun",
+      slug: "add-a-live-star-history-chart-to-your-github-readme",
+      featured: false,
+      featureImage: "",
+    },
+  ];
   const blogList: Blog[] = [];
   for (const raw of rawBlogList) {
     const contentRes = await fetch(`/blog/${raw.slug}.md`);
     const content = await contentRes.text();
     blogList.push({
       ...raw,
+      publishedDate: "2025-12-12",
+      excerpt: "",
       readingTime: utils.calcReadingTime(content),
     });
   }

@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es2015"],
+    "target": "es2020",
+    "lib": ["es2020"],
     "rootDir": "../",
     "outDir": "dist",
     "module": "CommonJS",
     "moduleResolution": "node",
     "strict": false,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true
+  },
+  "ts-node": {
+    "esm": false,
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
   },
   "include": [
     "./*.ts",

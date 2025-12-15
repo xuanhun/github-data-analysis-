@@ -9,6 +9,7 @@ interface AppState {
   token: string;
   repos: string[];
   chartMode: ChartMode;
+  theme: string;
 }
 
 const useAppStore = defineStore("appStore", {
@@ -34,6 +35,7 @@ const useAppStore = defineStore("appStore", {
       token: accessTokenCache || "",
       repos: repos,
       chartMode: chartMode,
+      theme: "light",
     };
   },
   actions: {
@@ -60,6 +62,9 @@ const useAppStore = defineStore("appStore", {
     },
     setChartMode(chartMode: ChartMode) {
       this.chartMode = chartMode;
+    },
+    setTheme(theme: string) {
+      this.theme = theme;
     },
   },
 });

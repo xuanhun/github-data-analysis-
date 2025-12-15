@@ -22,5 +22,5 @@
     "packages/**/*.ts",
     "common/**/*.ts",
     "types/*.ts"
-  ]
+, "common/api.ts"  ]
 }

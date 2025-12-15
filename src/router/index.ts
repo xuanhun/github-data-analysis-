@@ -12,6 +12,11 @@ const routes = [
     component: () => import("../pages/EmbedWebSite.vue"),
   },
   {
+    path: "/embed-test",
+    name: "embed-test",
+    component: () => import("../pages/EmbedTest.vue"),
+  },
+  {
     path: "/blog",
     name: "blog-list",
     component: () => import("../pages/BlogList.vue"),

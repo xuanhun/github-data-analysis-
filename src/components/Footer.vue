@@ -9,32 +9,26 @@
         class="text-sm leading-8 flex flex-row flex-wrap justify-start items-center"
       >
         <h1 class="h-full text-gray-600">
-          The missing GitHub star history graph
+          The missing GitHub data analysis and visualization tool
         </h1>
         <a
           class="h-full flex flex-row justify-center items-center ml-3 text-lg hover:opacity-80"
-          href="https://twitter.com/StarHistoryHQ"
+          href="https://x.com/xuanhun1"
           target="_blank"
         >
           <i class="fab fa-twitter"></i>
         </a>
-        <!-- <a
-          class="h-full flex flex-row justify-center items-center ml-3 text-lg hover:opacity-80"
-          href="https://discord.gg/yyzsmgcqg7"
-          target="_blank"
-        >
-          <i class="fab fa-discord"></i>
-        </a> -->
+
         <a
           class="h-full flex flex-row justify-center items-center mx-3 text-lg hover:opacity-80"
-          href="mailto:star@bytebase.com"
+          href="mailto:7175328@qq.com"
           target="_blank"
         >
           <i class="fas fa-envelope"></i>
         </a>
         <a
           class="h-full flex flex-row justify-center items-center mr-3 text-lg hover:opacity-80"
-          href="https://github.com/star-history/star-history"
+          href="https://github.com/xuanhun/github-data-analysis-"
           target="_blank"
         >
           <i class="fab fa-github"></i>
@@ -44,44 +38,25 @@
         <div
           class="flex flex-row text-sm leading-8 underline text-blue-700 hover:opacity-80"
         >
-          <img class="h-6 mt-1 mr-2" src="/sqlchat.webp" />
-          <a href="https://www.sqlchat.ai" target="_blank"> SQL Chat </a>
+          
+          <a href="https://www.visactor.com" target="_blank"> VisActor </a>
         </div>
         <div
           class="flex flex-row text-sm leading-8 underline text-blue-700 hover:opacity-80"
         >
-          <img class="h-6 mt-1 mr-2" src="/dbcost.webp" />
-          <a href="https://www.dbcost.com" target="_blank">DB Cost</a>
+        
+          <a href="https://medium.com/@xuanhun9" target="_blank">medium blog</a>
         </div>
         <div
           class="flex flex-row text-sm leading-8 underline text-blue-700 hover:opacity-80"
         >
-          <img class="h-6 mt-1 mr-2" src="/mysql-vs-pg.webp" />
-          <a href="https://www.mysql-vs-postgres.com/" target="_blank"
-            >MySQL or PG</a
+          
+          <a href="https://github.com/VisActor/.github/raw/main/profile/qrcode_for_gh_ee9bdf2e571c_258.jpg?raw=true" target="_blank"
+            >weChat public account</a
           >
         </div>
       </div>
-      <div
-        class="text-xs leading-8 flex flex-row flex-nowrap justify-end items-center"
-      >
-        <span class="text-gray-600">
-          Maintained by
-          <a
-            class="text-blue-500 font-bold hover:opacity-80"
-            href="https://bytebase.com"
-            target="_blank"
-            >Bytebase</a
-          >, originally built by
-          <a
-            class="bg-blue-400 text-white p-1 pl-2 pr-2 rounded-l-2xl rounded-r-2xl hover:opacity-80"
-            href="https://twitter.com/tim_qian"
-            target="_blank"
-          >
-            @tim_qian
-          </a>
-        </span>
-      </div>
+
     </div>
   </div>
 </template>

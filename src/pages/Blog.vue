@@ -3,7 +3,7 @@
     <Header />
     <div class="w-full h-auto grow lg:grid lg:grid-cols-[256px_1fr_256px]">
       <div class="w-full hidden lg:block">
-        <HighlightBlogSection />
+        <!-- <HighlightBlogSection /> -->
       </div>
       <div class="w-full flex flex-col justify-start items-center">
         <div
@@ -100,24 +100,8 @@
             </p>
           </div>
         </div>
-        <div class="mt-12">
-          <iframe
-            src="https://embeds.beehiiv.com/2803dbaa-d8dd-4486-8880-4b843f3a7da6?slim=true"
-            data-test-id="beehiiv-embed"
-            height="52"
-            frameborder="0"
-            scrolling="no"
-            style="
-              margin: 0;
-              border-radius: 0px !important;
-              background-color: transparent;
-            "
-          ></iframe>
-        </div>
-        <SponsorFooterBanner
-          v-if="!state.isLoading"
-          class="mt-16 mb-8"
-        ></SponsorFooterBanner>
+
+     
       </div>
       <div class="w-full hidden lg:block"></div>
     </div>
@@ -133,9 +117,9 @@ import { useRoute } from "vue-router";
 import utils from "../../common/utils";
 import Footer from "../components/Footer.vue";
 import Header from "../components/Header.vue";
-import SponsorFooterBanner from "../components/SponsorView.vue";
+
 import SponsorRightBanner from "../components/SponsorStaticBanner.vue";
-import HighlightBlogSection from "../components/HighlightBlogSection.vue";
+// import HighlightBlogSection from "../components/HighlightBlogSection.vue";
 
 interface State {
   isLoading: boolean;
@@ -149,18 +133,18 @@ const state = reactive<State>({
 const currentRoute = useRoute();
 
 onMounted(async () => {
-  const blogSlug = currentRoute.params.blogSlug as string;
-  const blogListRes = await fetch("/blog/data.json");
-  const blogList = (await blogListRes.json()) as Blog[];
-  const blog = blogList.find((blog) => blog.slug === blogSlug);
-  if (!blog) {
-    return;
-  }
 
-  const contentRes = await fetch(`/blog/${blogSlug}.md`);
+
+  const contentRes = await fetch(`/blog/add-a-live-star-history-chart-to-your-github-readme.md`);
   const content = await contentRes.text();
   state.blog = {
-    ...blog,
+    title: "Add a live star history chart to your GitHub README",
+    author: "xuanhun",
+    slug: "add-a-live-star-history-chart-to-your-github-readme",
+    featured: false,
+    featureImage: "",
+    publishedDate: "2025-12-12",
+    excerpt: "",
     readingTime: utils.calcReadingTime(content),
   };
   state.parsedBlogHTML = marked.parse(content);

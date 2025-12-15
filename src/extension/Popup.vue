@@ -75,9 +75,9 @@
       <span class="flex flex-row justify-start items-center">
         <a
           class="github-button"
-          href="https://github.com/star-history/star-history"
+          href="https://github.com/xuanhun/github-data-analysis-"
           data-show-count="true"
-          aria-label="Star star-history/star-history on GitHub"
+          aria-label="Star xuanhun/github-data-analysis- on GitHub"
           target="_blank"
         >
           Star
@@ -88,7 +88,7 @@
         style="font-family: 'xkcd', serif"
       >
         <img class="w-5 h-auto mr-1" src="/icon.png" />
-        star-history.com
+        gitdata.xuanhun520.com
       </span>
     </div>
   </div>
@@ -194,7 +194,7 @@ const handleSetTokenDialogClose = () => {
 
 const handleOpenInWebsiteBtnClick = () => {
   chrome.tabs.create({
-    url: `https://star-history.com/#${state.repo}`,
+    url: `https://gitdata.xuanhun520.com/#${state.repo}`,
   });
 };
 </script>

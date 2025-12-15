@@ -1,21 +1,6 @@
 <template>
   <div class="w-full px-3 shrink-0 flex flex-col justify-start items-center">
-    <div
-      class="w-auto mx-auto mt-6 mb-2 flex flex-row justify-center items-center flex-wrap"
-      :class="state.latestBlog ?? 'invisible'"
-    >
-      <span
-        class="px-2 -mt-px leading-7 rounded mr-2 text-sm bg-green-100 text-green-600 font-medium"
-        >What's new</span
-      >
-      <a
-        class="text-gray-700 hover:underline"
-        :href="`/blog/${state.latestBlog?.slug}`"
-      >
-        {{ state.latestBlog?.title }}
-        <i class="fas fa-chevron-right mr-1 text-gray-500 text-sm"></i>
-      </a>
-    </div>
+ 
     <div
       class="w-auto sm:w-full grow max-w-3xl 2xl:max-w-4xl mt-4 flex flex-row justify-center items-center shadow-inner border border-solid border-dark rounded"
     >
@@ -27,7 +12,7 @@
         :placeholder="
           state.repos.length > 0
             ? '...add next repository'
-            : 'star-history or star-history/star-history or https://github.com/star-history/star-history'
+            : 'visactor/vchart or visactor/vtable'
         "
         @paste="handleInputerPasted"
         @keydown="handleInputerKeyDown"
@@ -95,7 +80,6 @@ interface State {
     name: string;
     visible: boolean;
   }[];
-  latestBlog?: Blog;
 }
 
 const store = useAppStore();
@@ -111,14 +95,7 @@ const isFetching = computed(() => {
 });
 
 onMounted(async () => {
-  const res = await fetch("/blog/data.json");
-  const blogList = (await res.json()) as Blog[];
-  for (const blog of blogList) {
-    if (blog.featured) {
-      state.latestBlog = blog;
-      break;
-    }
-  }
+
   state.repos = store.repos.map((r) => {
     return {
       name: r,
@@ -152,7 +129,7 @@ const handleAddRepoBtnClick = () => {
 
   let rawRepos = state.repo;
   if (rawRepos === "" && store.repos.length === 0) {
-    rawRepos = "star-history/star-history";
+    rawRepos = "visactor/vchart,visactor/vtable";
   }
 
   if (rawRepos === "") {
@@ -163,7 +140,7 @@ const handleAddRepoBtnClick = () => {
   for (const rawRepo of rawRepos.split(",")) {
     let repo = "";
 
-    // Match repo name from github repo links. e.g. https://github.com/star-history/star-history/issues -> star-history/star-history
+    // Match repo name from github repo links. e.g. https://github.com/visactor/vchart -> visactor/vchart
     if (GITHUB_REPO_URL_REG.test(rawRepo)) {
       repo = (rawRepo.match(GITHUB_REPO_URL_REG) as string[])[1];
     }

@@ -1,0 +1,46 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 渐变定义 -->
+  <defs>
+    <!-- 折线图渐变 -->
+    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#50c878;stop-opacity:1" />
+    </linearGradient>
+    <!-- 背景渐变 -->
+    <radialGradient id="bgGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#f6f8fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e1e4e8;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- 背景圆形 -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)"/>
+  
+  <!-- 折线图（居中） -->
+  <g transform="translate(256, 256)">
+    <!-- 网格线（可选，很淡） -->
+    <g opacity="0.1">
+      <line x1="-200" y1="120" x2="200" y2="120" stroke="#24292e" stroke-width="1"/>
+      <line x1="-200" y1="60" x2="200" y2="60" stroke="#24292e" stroke-width="1"/>
+      <line x1="-200" y1="0" x2="200" y2="0" stroke="#24292e" stroke-width="1"/>
+      <line x1="-200" y1="-60" x2="200" y2="-60" stroke="#24292e" stroke-width="1"/>
+      <line x1="-200" y1="-120" x2="200" y2="-120" stroke="#24292e" stroke-width="1"/>
+    </g>
+    
+    <!-- 折线图主体 - 有高低起伏变化 -->
+    <path d="M-180,80 L-140,100 L-100,60 L-60,90 L-20,40 L20,70 L60,30 L100,60 L140,20 L180,50" 
+          fill="none" stroke="url(#lineGradient)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- 数据点 -->
+    <circle cx="-180" cy="80" r="10" fill="#50c878" stroke="#fff" stroke-width="4"/>
+    <circle cx="-140" cy="100" r="10" fill="#50c878" stroke="#fff" stroke-width="4"/>
+    <circle cx="-100" cy="60" r="10" fill="#50c878" stroke="#fff" stroke-width="4"/>
+    <circle cx="-60" cy="90" r="10" fill="#4a90e2" stroke="#fff" stroke-width="4"/>
+    <circle cx="-20" cy="40" r="10" fill="#4a90e2" stroke="#fff" stroke-width="4"/>
+    <circle cx="20" cy="70" r="10" fill="#4a90e2" stroke="#fff" stroke-width="4"/>
+    <circle cx="60" cy="30" r="10" fill="#4a90e2" stroke="#fff" stroke-width="4"/>
+    <circle cx="100" cy="60" r="10" fill="#4a90e2" stroke="#fff" stroke-width="4"/>
+    <circle cx="140" cy="20" r="12" fill="#4a90e2" stroke="#fff" stroke-width="4"/>
+    <circle cx="180" cy="50" r="12" fill="#4a90e2" stroke="#fff" stroke-width="4"/>
+  </g>
+</svg>

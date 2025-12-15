@@ -15,7 +15,7 @@
       <span v-else class="font-mono font-bold text-gray-500">README.md</span>
       with the following code (<a
         class="font-mono font-bold underline text-blue-500 hover:opacity-80"
-        :href="`https://github.com/bytebase/bytebase#star-history`"
+        :href="`https://github.com/xuanhun/github-data-analysis-`"
         target="_blank"
         >example</a
       >):
@@ -27,19 +27,13 @@
       <div style="display: flex;">
         <p
           class="text-center py-4 bg-green-600 text-light font-mono rounded-b-md cursor-pointer hover:bg-green-700"
-          style="width: 70%; border-bottom-right-radius: 0;"
+          style="width: 100%; border-bottom-right-radius: 0;"
           @click="handleCopyBtnClick"
         >
           Copy to GitHub README.md
         </p>
-        <div class="bg-gray-100" style="width: 1px;"></div>
-        <p
-          class="text-center py-4 bg-green-600 text-light font-mono rounded-b-md cursor-pointer hover:bg-green-700"
-          style="width: 30%; min-width: max-content; border-bottom-left-radius: 0;"
-          @click="handleDarkModeCopyBtnClick"
-        >
-          (dark theme supported)
-        </p>
+        
+  
       </div>
     </div>
   </div>
@@ -70,34 +64,28 @@ const repoText = computed(() => {
 const embedCode = computed(() => {
   return `## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=${store.repos.join(
-    ","
-  )}&type=${store.chartMode})](${window.location.href})
-`;
-});
-
-const embedDarkModeCode = computed(() => {
-  let repos = store.repos.join("%2C");
-  let type = store.chartMode;
-  return `## Star History
-
 <a href="${window.location.href}">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=${repos}&type=${type}&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=${repos}&type=${type}" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=${repos}&type=${type}" />
-  </picture>
+<picture >
+  <source media="(prefers-color-scheme: dark) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=${store.repos.join(
+    ","
+  )}&type=${store.chartMode}&theme=dark" />
+  <source  media="(prefers-color-scheme: light) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=${store.repos.join(
+    ","
+  )}&type=${store.chartMode}&theme=light" />
+  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=${store.repos.join(
+    ","
+  )}&type=${store.chartMode}&theme=${store.theme}" />
+</picture>
 </a>
 `;
 });
+
+
 
 const handleCopyBtnClick = () => {
   utils.copyTextToClipboard(embedCode.value);
   toast.succeed("Embed markdown code copied");
 };
 
-const handleDarkModeCopyBtnClick = () => {
-  utils.copyTextToClipboard(embedDarkModeCode.value);
-  toast.succeed("Embed markdown code copied");
-};
+
 </script>

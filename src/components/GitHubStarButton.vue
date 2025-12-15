@@ -1,9 +1,9 @@
 <template>
   <a
     class="border rounded flex flex-row justify-start items-center text-black text-xs bg-white shadow-inner hover:opacity-80"
-    href="https://github.com/star-history/star-history"
+    href="https://github.com/xuanhun/github-data-analysis-"
     target="_blank"
-    aria-label="Star star-history/star-history on GitHub"
+    aria-label="Star xuanhun/github-data-analysis- on GitHub"
   >
     <span
       class="pr-1 pl-2 h-full flex flex-row justify-center items-center bg-gray-100 border-r font-medium"
@@ -28,7 +28,7 @@ const starCount = ref(0);
 
 const getRepoStarCount = async () => {
   const { data } = await axios.get(
-    `https://api.github.com/repos/star-history/star-history`,
+    `https://api.github.com/repos/xuanhun/github-data-analysis-`,
     {
       headers: {
         Accept: "application/vnd.github.v3.star+json",
