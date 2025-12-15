@@ -87,7 +87,7 @@ export const getRepoData = async (
   > = new Map();
   // 从 server api 获取Mongo中缓存的数据
   // todo
-  const repoDataFromServer = await fetch(`https://10.3.146.109:8080/api/starjson?repos=${repos.join(",")}`);
+  const repoDataFromServer = await fetch(`https://gitdata.xuanhun520.com/api/starjson?repos=${repos.join(",")}`);
   const repoDataFromServerJson = await repoDataFromServer.json();
   for (const repo of repos) {
     const repoData = repoDataFromServerJson.repos.find((r: any) => r.repo === repo);
@@ -108,7 +108,7 @@ export const getRepoData = async (
           count: latestCount,
         });
            // 更新Mongo 中的数据
-         fetch(`https://10.3.146.109:8080/api/updatestarjson`, {
+         fetch(`https://gitdata.xuanhun520.com/api/updatestarjson`, {
           method: "POST",
              headers: {
             "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export const getRepoData = async (
         const logo = await api.getRepoLogoUrl(repo, token);
         repoDataCacheMap.set(repo, { star: starRecords, logo });
         // 更新Mongo 中的数据
-         fetch(`https://10.3.146.109:8080/api/updatestarjson`, {
+         fetch(`https://gitdata.xuanhun520.com/api/updatestarjson`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
