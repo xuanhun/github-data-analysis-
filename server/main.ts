@@ -1,13 +1,19 @@
 import http from "http";
+import https from "https";
+import fs from "fs";
+import path from "path";
 import Koa from "koa";
-import Router from "koa-router";
+import Router from "@koa/router";
+
+
 import cors from "@koa/cors";
+import bodyParser from "@koa/bodyparser";
 import { optimize, Config } from 'svgo';
-import { JSDOM } from "jsdom";
 import logger from "./logger";
 import XYChart from "../packages/xy-chart";
-import { convertDataToChartData, getRepoData } from "../common/chart";
-import cache from "./cache";
+import { convertStarDataToChartData, getRepoData } from "../common/chart";
+
+import { RepoData } from "../types/chart";
 import {
   getChartWidthWithSize,
   replaceSVGContentFilterWithCamelcase,
@@ -16,6 +22,12 @@ import {
 import { getNextToken, initTokenFromEnv } from "./token";
 import { ChartMode } from "../types/chart";
 import { CHART_SIZES, CHART_TYPES, MAX_REQUEST_AMOUNT } from "./const";
+import { getRepoStarRecordsFromCache } from "./server_api";
+import api from "../common/api";
+import { updateRepoData } from "./mongo";
+const Canvas = require('canvas');
+const { convertVChartToSvg } = require('@visactor/vchart-svg-plugin');
+import { RepoImageCache } from "./cache";
 
 const startServer = async () => {
   await initTokenFromEnv();
@@ -24,14 +36,22 @@ const startServer = async () => {
   app.use(cors());
   const router = new Router();
 
+  const ALLOWED_ORIGINS = new Set([
+    "https://gitdata.xuanhun520.com",
+    "https://localhost:3000",
+  ]);
+  const isAllowedOrigin = (origin?: string) => !!origin && ALLOWED_ORIGINS.has(origin);
+
   // Example request link:
-  // /svg?repos=star-history/star-history&type=Date
-  router.get("/svg", async (ctx) => {
-    const theme = `${ctx.query["theme"]}`;
+  // /starimg?repos=star-history/star-history&type=Date&theme=light&transparent=false
+  router.get("/api/starimg", async (ctx) => {
+    const theme = `${ctx.
+      query["theme"]}`;
     const transparent = `${ctx.query["transparent"]}`
     const repos = `${ctx.query["repos"]}`.split(",");
     let type = `${ctx.query["type"]}` as ChartMode;
     let size = `${ctx.query["size"]}`;
+    let imgType = `${ctx.query["imgtype"]}` == "undefined" ? "png" : `${ctx.query["imgtype"]}`; //png or svg
 
     if (!CHART_TYPES.includes(type)) {
       type = "Date";
@@ -45,40 +65,73 @@ const startServer = async () => {
       ctx.throw(400, `${http.STATUS_CODES[400]}: Repo name required`);
       return;
     }
+    const repoData: RepoData[] = [];
 
-    const repoData = [];
-    const nodataRepos = [];
-
-    for (const repo of repos) {
-      const cacheData = cache.get(repo);
-
-      if (cacheData) {
-        repoData.push({
-          repo,
-          starRecords: cacheData.starRecords,
-          logoUrl: cacheData.logoUrl,
-        });
-      } else {
-        nodataRepos.push(repo);
-      }
+    let imageContent = "";
+    if (imgType === "png") {
+      imageContent = RepoImageCache.get(repos.join(",") + theme, "png");
     }
-
-    if (nodataRepos.length > 0) {
-      const token = getNextToken();
-
+    else if (imgType === "svg") {
+      imageContent = RepoImageCache.get(repos.join(",") + theme, "svg");
+    }
+    if (!imageContent) {
       try {
-        const data = await getRepoData(nodataRepos, token, MAX_REQUEST_AMOUNT);
+        const token = getNextToken();
+        // 先从mongo中获取数据
+        for (const repo of repos) {
+          const repoDataFromMongo = await getRepoStarRecordsFromCache(repo);
+          //如果数据最新时间在7天前，则不添加到repoData
+          if (!repoDataFromMongo || repoDataFromMongo && new Date(repoDataFromMongo.starLogs[repoDataFromMongo.starLogs.length - 1].date) < new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) {
+            const data = await getRepoData([repo], token, MAX_REQUEST_AMOUNT);
+            repoData.push(data[0]);
+          }
+          else if (repoDataFromMongo && repoDataFromMongo.starLogs?.length > 0) {
+            var repoDataItem = {
+              repo,
+              starRecords: repoDataFromMongo.starLogs,
+              logoUrl: repoDataFromMongo.logo,
+            };
+            repoData.push(repoDataItem);
+            //如果最新数据不是今天，获取最新Count数据，更新到repodata和repoDataFromMongo
+            if (new Date(repoDataFromMongo.starLogs[repoDataFromMongo.starLogs.length - 1].date) < new Date(Date.now() - 24 * 60 * 60 * 1000)) {
+              const count = await api.getRepoStargazersCount(repo, token);
+              repoDataItem.starRecords.push({ date: new Date().toISOString(), count });
+            }
+          }
 
-        for (const d of data) {
-          const logoUrl = await getBase64Image(d.logoUrl);
-          cache.set(d.repo, {
-            starRecords: d.starRecords,
-            starAmount: d.starRecords[d.starRecords.length - 1].count,
-            logoUrl,
-          });
-          repoData.push(d);
         }
-      } catch (error: any) {
+        //根据repoData 更新mongo
+        for (const repoDataItem of repoData) {
+          await updateRepoData(repoDataItem.repo, { starLogs: repoDataItem.starRecords, logo: repoDataItem.logoUrl });
+        }
+
+        const chart = XYChart(
+          null,
+          {
+            title: "Star History",
+            xLabel: "",
+            yLabel: "GitHub Stars",
+            data: convertStarDataToChartData(repoData),
+            showDots: true,
+            transparent: false,
+            theme: theme as "light" | "dark",
+            mode: "node",
+            modeParams: Canvas
+          }
+        );
+
+        await chart.renderAsync();
+        const pngBuffer = chart.getImageBuffer();
+        const png = pngBuffer.toString("base64");
+        const svg = convertVChartToSvg(chart);
+        // Optimizing SVG to save bandwidth
+        const svgC = replaceSVGContentFilterWithCamelcase(svg);
+        //写入缓存
+        RepoImageCache.set(repos.join(",") + theme, svgC, png);
+
+
+      }
+      catch (error: any) {
         const status = error.status || 400;
         const message =
           error.message || "Some unexpected error happened, try again later";
@@ -89,41 +142,31 @@ const startServer = async () => {
       }
     }
 
-    const dom = new JSDOM(`<!DOCTYPE html><body></body>`);
-    const body = dom.window.document.querySelector("body");
-    const svg = dom.window.document.createElement(
-      "svg"
-    ) as unknown as SVGSVGElement;
-
-    if (!dom || !body || !svg) {
-      ctx.throw(
-        500,
-        `${http.STATUS_CODES[500]}: Failed to mock dom with JSDOM`
-      );
-      return;
-    }
-
-    body.append(svg);
-    svg.setAttribute("width", `${getChartWidthWithSize(size)}`);
-    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    imageContent = RepoImageCache.get(repos.join(",") + theme, imgType as "png" | "svg");
 
     try {
-      XYChart(
-        svg,
-        {
-          title: "Star History",
-          xLabel: type === "Date" ? "Date" : "Timeline",
-          yLabel: "GitHub Stars",
-          data: convertDataToChartData(repoData, type),
-          showDots: false,
-          transparent: transparent.toLowerCase() === "true",
-          theme: theme === "dark" ? "dark" : "light",
-        },
-        {
-          xTickLabelType: type === "Date" ? "Date" : "Number",
-          chartWidth: getChartWidthWithSize(size),
-        }
-      );
+      const options: Config = {
+        multipass: true, // Apply optimizations multiple times
+      };
+
+      const now = new Date();
+      if (imgType === "svg") {
+        const optimized = optimize(imageContent, options).data;
+
+        ctx.type = "image/svg+xml;charset=utf-8";
+        ctx.set("cache-control", "no-cache");
+        ctx.set("date", `${now}`);
+        ctx.set("expires", `${now}`);
+        ctx.body = optimized;
+      }
+      else if (imgType === "png") {
+        const pngBuffer = Buffer.from(imageContent, "base64");
+        ctx.type = "image/png";
+        ctx.set("cache-control", "no-cache");
+        ctx.set("date", `${now}`);
+        ctx.set("expires", `${now}`);
+        ctx.body = pngBuffer;
+      }
     } catch (error) {
       ctx.throw(
         500,
@@ -132,30 +175,104 @@ const startServer = async () => {
       return;
     }
 
-    // Optimizing SVG to save bandwidth
-    const svgContent = replaceSVGContentFilterWithCamelcase(svg.outerHTML);
-    const options: Config = {
-      multipass: true, // Apply optimizations multiple times
+  });
+
+  //get star data  from mongo by repo name, return the star data as json
+  router.get("/api/starjson", async (ctx) => {
+    const origin = ctx.headers.origin;
+    if (!isAllowedOrigin(origin)) {
+      ctx.throw(403, `${http.STATUS_CODES[403]}: Forbidden`);
+      return;
+    }
+    const repos = `${ctx.query["repos"]}`.split(",");
+    const repoData: RepoData[] = [];
+    const responseData: any = {
+      repos: repoData,
     };
-    const optimized = optimize(svgContent, options).data;
+    for (const repo of repos) {
+      const repoDataFromMongo = await getRepoStarRecordsFromCache(repo);
+      const lastDate = repoDataFromMongo ? new Date(repoDataFromMongo.starLogs[repoDataFromMongo.starLogs.length - 1].date) : null;
+      //如果数据最新时间在7天前，则不添加到repoData
+      if (lastDate && lastDate > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) {
+        responseData.repos.push({
+          repo,
+          starRecords: repoDataFromMongo.starLogs,
+          logoUrl: repoDataFromMongo.logo
+        });
+      }
+    }
 
     const now = new Date();
-    ctx.type = "image/svg+xml;charset=utf-8";
+    ctx.type = "application/json";
     ctx.set("cache-control", "no-cache");
     ctx.set("date", `${now}`);
     ctx.set("expires", `${now}`);
-    ctx.body = optimized;
+    ctx.body = responseData;
   });
+
+//更新star 数据
+  router.post("/api/updatestarjson", async (ctx) => {
+    const origin = ctx.headers.origin;
+    if (!isAllowedOrigin(origin)) {
+      ctx.throw(403, `${http.STATUS_CODES[403]}: Forbidden`);
+      return;
+    }
+    const repoData: RepoData= ctx.request.body;
+    if(!repoData || !repoData.repo || !repoData.starRecords || repoData.starRecords.length === 0 || !repoData.logoUrl) {
+      ctx.throw(400, `${http.STATUS_CODES[400]}: Bad Request`);
+      return;
+    }else
+    {
+      await updateRepoData(repoData.repo, { starLogs: repoData.starRecords, logo: repoData.logoUrl });
+    }
+
+    const now = new Date();
+    ctx.type = "application/json";
+    ctx.set("cache-control", "no-cache");
+    ctx.set("date", `${now}`);
+    ctx.set("expires", `${now}`);
+    ctx.body = {message: "success"};
+  });
+
+
 
   app.on("error", (err) => {
     logger.error("server error: ", err);
   });
 
+  app.use(bodyParser({ enableTypes: ["json"],  jsonLimit: "10mb" }));
+
   app.use(router.routes()).use(router.allowedMethods());
 
-  app.listen(8080, () => {
-    logger.info(`server running on port ${8080}`);
-  });
+  const port = parseInt(process.env.PORT || "8080", 10);
+  const useHttps = true;
+
+  if (useHttps) {
+    // 尝试加载 SSL 证书
+    const certPath = process.env.SSL_CERT_PATH || path.resolve(__dirname, "../certs/server.crt");
+    const keyPath = process.env.SSL_KEY_PATH || path.resolve(__dirname, "../certs/server.key");
+
+    if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+      const options = {
+        cert: fs.readFileSync(certPath),
+        key: fs.readFileSync(keyPath),
+      };
+
+      https.createServer(options, app.callback()).listen(port, () => {
+        logger.info(`HTTPS server running on port ${port}`);
+      });
+    } else {
+      logger.warn(`SSL certificate files not found at ${certPath} and ${keyPath}. Falling back to HTTP.`);
+      logger.warn(`To enable HTTPS, set SSL_CERT_PATH and SSL_KEY_PATH environment variables or place certificates in certs/ directory.`);
+      http.createServer(app.callback()).listen(port, () => {
+        logger.info(`HTTP server running on port ${port}`);
+      });
+    }
+  } else {
+    http.createServer(app.callback()).listen(port, () => {
+      logger.info(`HTTP server running on port ${port}`);
+    });
+  }
 };
 
 startServer();
