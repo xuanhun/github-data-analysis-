@@ -45,7 +45,8 @@ This project is forked from <b>star-history/star-history</b> and upgraded. It wi
 
 ## 🌠 Screenshots
 
-<a href="https://gitdata.xuanhun520.com"><img width="800px" src="https://user-images.githubusercontent.com/24653555/154391264-312b448b-f851-41bf-bb8d-4c21ec6795b6.gif" />
+<a href="https://gitdata.xuanhun520.com"> ![20251216184515_rec_](https://github.com/user-attachments/assets/12b605f4-5857-484a-b1fc-a241c6ca3a23)
+
 </a>
 
 
