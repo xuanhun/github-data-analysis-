@@ -1,0 +1,18 @@
+{
+  "header": {
+    "blog": "Blog",
+    "addAccessToken": "Aggiungi token di accesso",
+    "editAccessToken": "Modifica token di accesso",
+    "howToUse": "Come usare questo sito"
+  },
+  "footer": {
+    "tagline": "Lo strumento mancante per analisi e visualizzazione dei dati GitHub",
+    "visactor": "VisActor",
+    "medium": "Blog Medium",
+    "wechat": "Account pubblico WeChat"
+  },
+  "sponsor": {
+    "title": "Sponsor",
+    "yourLogo": "Il tuo logo"
+  }
+}

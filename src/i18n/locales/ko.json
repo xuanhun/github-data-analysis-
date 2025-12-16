@@ -1,0 +1,18 @@
+{
+  "header": {
+    "blog": "블로그",
+    "addAccessToken": "액세스 토큰 추가",
+    "editAccessToken": "액세스 토큰 수정",
+    "howToUse": "사이트 사용 방법"
+  },
+  "footer": {
+    "tagline": "누락된 GitHub 데이터 분석 및 시각화 도구",
+    "visactor": "VisActor",
+    "medium": "Medium 블로그",
+    "wechat": "WeChat 공식 계정"
+  },
+  "sponsor": {
+    "title": "스폰서",
+    "yourLogo": "당신의 로고"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "header": {
+    "blog": "ブログ",
+    "addAccessToken": "アクセストークンを追加",
+    "editAccessToken": "アクセストークンを編集",
+    "howToUse": "このサイトの使い方"
+  },
+  "footer": {
+    "tagline": "不足している GitHub データの分析と可視化ツール",
+    "visactor": "VisActor",
+    "medium": "Medium ブログ",
+    "wechat": "WeChat 公開アカウント"
+  },
+  "sponsor": {
+    "title": "スポンサー",
+    "yourLogo": "あなたのロゴ"
+  }
+}

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { i18n, supportedLocales } from "../i18n";
 
 const routes = [
   {
@@ -41,6 +42,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, _from, next) => {
+  const lang = (to.query.lang || to.query.locale || to.query.hl) as string | undefined;
+  if (lang && supportedLocales.includes(lang)) {
+    i18n.setLocale(lang);
+  }
+  next();
 });
 
 export default router;

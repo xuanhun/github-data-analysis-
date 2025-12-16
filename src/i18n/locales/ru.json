@@ -1,0 +1,18 @@
+{
+  "header": {
+    "blog": "Блог",
+    "addAccessToken": "Добавить токен доступа",
+    "editAccessToken": "Редактировать токен доступа",
+    "howToUse": "Как пользоваться сайтом"
+  },
+  "footer": {
+    "tagline": "Недостающий инструмент анализа и визуализации данных GitHub",
+    "visactor": "VisActor",
+    "medium": "Блог Medium",
+    "wechat": "Публичный аккаунт WeChat"
+  },
+  "sponsor": {
+    "title": "Спонсоры",
+    "yourLogo": "Ваш логотип"
+  }
+}

@@ -9,7 +9,7 @@
         class="text-sm leading-8 flex flex-row flex-wrap justify-start items-center"
       >
         <h1 class="h-full text-gray-600">
-          The missing GitHub data analysis and visualization tool
+          {{ $t('footer.tagline') }}
         </h1>
         <a
           class="h-full flex flex-row justify-center items-center ml-3 text-lg hover:opacity-80"
@@ -39,20 +39,20 @@
           class="flex flex-row text-sm leading-8 underline text-blue-700 hover:opacity-80"
         >
           
-          <a href="https://www.visactor.com" target="_blank"> VisActor </a>
+          <a href="https://www.visactor.com" target="_blank"> {{ $t('footer.visactor') }} </a>
         </div>
         <div
           class="flex flex-row text-sm leading-8 underline text-blue-700 hover:opacity-80"
         >
         
-          <a href="https://medium.com/@xuanhun9" target="_blank">medium blog</a>
+          <a href="https://medium.com/@xuanhun9" target="_blank">{{ $t('footer.medium') }}</a>
         </div>
         <div
           class="flex flex-row text-sm leading-8 underline text-blue-700 hover:opacity-80"
         >
           
           <a href="https://github.com/VisActor/.github/raw/main/profile/qrcode_for_gh_ee9bdf2e571c_258.jpg?raw=true" target="_blank"
-            >weChat public account</a
+            >{{ $t('footer.wechat') }}</a
           >
         </div>
       </div>

@@ -8,6 +8,11 @@
 加入了dark 主题
 ---
 
+# 数据查询和下载图片
+目前提供了直接的数据查询图片下载能力，但是需要提供你的githubtoken，系统不会将你的token 存储到服务器端。
+
+直接嵌入图片的方式，目前不需要 你提供token，但是希望你能贡献token，因为github 有请求数的限制，会影响使用，我通过mongodb 进行缓存数据，尽量避免这个影响。
+
 # 在 GitHub README 中加入实时的 Star 历史图
 
 <img width="1974" height="1580" alt="image" src="https://github.com/user-attachments/assets/412dc876-731f-4ac7-8320-7a4a25b38633" />

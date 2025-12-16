@@ -16,13 +16,13 @@
           class="h-full flex flex-row justify-center items-center px-3 hover:bg-zinc-800"
           to="/blog"
         >
-          <span class="text-light font-semibold">Blog</span>
+          <span class="text-light font-semibold">{{ $t('header.blog') }}</span>
         </router-link>
         <span
           class="h-full flex flex-row justify-center items-center cursor-pointer font-semibold mr-2 px-3 hover:bg-zinc-800"
           @click="handleSetTokenBtnClick"
         >
-          {{ token ? "Edit" : "Add" }} Access Token
+          {{ token ? $t('header.editAccessToken') : $t('header.addAccessToken') }}
         </span>
       </div>
 
@@ -44,6 +44,7 @@
           <i class="fab fa-discord text-2xl text-indigo-300"></i>
         </a> -->
         <GitHubStarButton />
+        <LanguageSwitcher />
       </div>
       <div class="h-full flex md:hidden flex-row justify-end items-center">
         <span
@@ -74,13 +75,13 @@
       class="h-12 px-3 w-full flex flex-row justify-start items-center cursor-pointer font-semibold text-dark mr-2 hover:bg-gray-100 hover:text-blue-500"
       to="/blog/how-to-use-github-data-analysis"
     >
-      📕 How to use this site
+      📕 {{ $t('header.howToUse') }}
     </router-link>
     <span
       class="h-12 px-3 w-full flex flex-row justify-start items-center cursor-pointer font-semibold text-dark mr-2 hover:bg-gray-100 hover:text-blue-500"
       @click="handleSetTokenBtnClick"
     >
-      {{ token ? "Edit" : "Add" }} Access Token
+      {{ token ? $t('header.editAccessToken') : $t('header.addAccessToken') }}
     </span>
     <span class="h-12 px-3 w-full flex flex-row justify-start items-center">
       <a
@@ -106,6 +107,7 @@ import useAppStore from "../store";
 
 import GitHubStarButton from "./GitHubStarButton.vue";
 import TokenSettingDialog from "./TokenSettingDialog.vue";
+import LanguageSwitcher from "./LanguageSwitcher.vue";
 
 interface State {
   showDropMenu: boolean;

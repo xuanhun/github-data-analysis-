@@ -1,0 +1,18 @@
+{
+  "header": {
+    "blog": "مدونة",
+    "addAccessToken": "إضافة رمز الوصول",
+    "editAccessToken": "تعديل رمز الوصول",
+    "howToUse": "كيفية استخدام هذا الموقع"
+  },
+  "footer": {
+    "tagline": "أداة تحليل وعرض بيانات GitHub المفقودة",
+    "visactor": "VisActor",
+    "medium": "مدونة Medium",
+    "wechat": "حساب WeChat العام"
+  },
+  "sponsor": {
+    "title": "الرعاة",
+    "yourLogo": "شعارك"
+  }
+}
