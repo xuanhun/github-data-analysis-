@@ -1,6 +1,6 @@
 import copyExtensionFiles from "./scripts/copyExtensionFiles";
 import emptyDist from "./scripts/emptyDist";
-import generateSitemap from "./scripts/generateSitemap";
+// import generateSitemap from "./scripts/generateSitemap";
 
 const additionBuildPlugin = () => {
   let envCommand = "";
@@ -35,7 +35,7 @@ const additionBuildPlugin = () => {
         if (envMode === "extension") {
           copyExtensionFiles();
         } else {
-          generateSitemap();
+          // generateSitemap();
         }
       }
     },

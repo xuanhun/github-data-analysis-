@@ -6,9 +6,9 @@
 [**gitdata.xuanhun520.com**](https://gitdata.xuanhun520.com)，**为 GitHub 仓库提供缺失的数据统计与可视化能力，比如 star 历史图表功能。**
 
 <picture>
-  <source media="(prefers-color-scheme: dark) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date&theme=dark" />
-  <source media="(prefers-color-scheme: light) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
-  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
+  <source media="(prefers-color-scheme: dark) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date" />
+  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date" />
 </picture>
 
 👆 **这是一个**实时**图表，使用以下 HTML 代码创建：👇
@@ -17,9 +17,9 @@
 
 ```html
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date&theme=dark" />
-  <source media="(prefers-color-scheme: light)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
-  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
+  <source media="(prefers-color-scheme: dark)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date" />
+  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date" />
 </picture>
 ```
 
@@ -148,6 +148,5 @@ pnpm i
   -- 更多的github 数据统计和分析功能
 
     
-
 
 

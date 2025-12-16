@@ -75,6 +75,8 @@ export const getRepoData = async (
   token = "",
   maxRequestAmount = DEFAULT_MAX_REQUEST_AMOUNT
 ): Promise<RepoData[]> => {
+  const isDev = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  const API_BASE = isDev ? "https://localhost:8080" : "https://gitdata.xuanhun520.com";
   const repoDataCacheMap: Map<
     string,
     {
@@ -87,7 +89,9 @@ export const getRepoData = async (
   > = new Map();
   // 从 server api 获取Mongo中缓存的数据
   // todo
-  const repoDataFromServer = await fetch(`https://gitdata.xuanhun520.com/api/starjson?repos=${repos.join(",")}`);
+const repoDataFromServer = await fetch(
+  `${API_BASE}/api/starjson?repos=${repos.join(",")}`
+);
   const repoDataFromServerJson = await repoDataFromServer.json();
   for (const repo of repos) {
     const repoData = repoDataFromServerJson.repos.find((r: any) => r.repo === repo);
@@ -108,7 +112,7 @@ export const getRepoData = async (
           count: latestCount,
         });
            // 更新Mongo 中的数据
-         fetch(`https://gitdata.xuanhun520.com/api/updatestarjson`, {
+         fetch(`${API_BASE}/api/updatestarjson`, {
           method: "POST",
              headers: {
             "Content-Type": "application/json",
@@ -128,7 +132,7 @@ export const getRepoData = async (
         const logo = await api.getRepoLogoUrl(repo, token);
         repoDataCacheMap.set(repo, { star: starRecords, logo });
         // 更新Mongo 中的数据
-         fetch(`https://gitdata.xuanhun520.com/api/updatestarjson`, {
+         fetch(`${API_BASE}/api/updatestarjson`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

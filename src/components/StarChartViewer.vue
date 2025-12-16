@@ -7,7 +7,8 @@
 
     <div class="flex flex-row items-center gap-2">
       <label for="theme">Theme</label>
-      <select id="theme" v-model="state.theme" class="w-[100px] border-2 border-blue-500 rounded" @change="handleThemeChange">
+      <select id="theme" v-model="state.theme" class="w-[100px] border-2 border-blue-500 rounded"
+        @change="handleThemeChange">
         <option value="light">Light</option>
         <option value="dark">Dark</option>
       </select>
@@ -17,7 +18,7 @@
   </div>
   <div v-if="state.chartData"
     class="relative mt-4 mb-4 w-full px-3 mx-auto max-w-4xl flex flex-row flex-wrap justify-between items-center">
-  
+
     <div class="flex flex-row flex-wrap justify-end items-center mb-2">
       <button
         class="ml-2 mb-2 rounded leading-9 text-sm px-3 cursor-pointer border text-dark bg-gray-100 hover:bg-gray-200"
@@ -144,13 +145,16 @@ const fetchReposData = async (repos: string[]) => {
   }
 
   try {
-    const data = await getRepoData(notCachedRepos, store.token);
-    for (const { repo, starRecords, logoUrl } of data) {
-      state.repoCacheMap.set(repo, {
-        starData: starRecords,
-        logoUrl,
-      });
+    if (notCachedRepos.length != 0) {
+      const data = await getRepoData(notCachedRepos, store.token);
+      for (const { repo, starRecords, logoUrl } of data) {
+        state.repoCacheMap.set(repo, {
+          starData: starRecords,
+          logoUrl,
+        });
+      }
     }
+
   } catch (error: any) {
     toast.warn(error.message);
 
@@ -279,19 +283,19 @@ const handleExportAsSVGBtnClick = () => {
     const svg = convertVChartToSvg(chartInstance);
     const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
     const svgUrl = URL.createObjectURL(svgBlob);
-  const link = document.createElement("a");
-  link.download = `star-history-${utils.getDateString(
-    Date.now(),
-    "yyyyMMdd"
-  )}.svg`;
-  link.href = svgUrl;
-  link.click();
-  toast.succeed("SVG Downloaded");
+    const link = document.createElement("a");
+    link.download = `star-history-${utils.getDateString(
+      Date.now(),
+      "yyyyMMdd"
+    )}.svg`;
+    link.href = svgUrl;
+    link.click();
+    toast.succeed("SVG Downloaded");
   } catch (error: any) {
     console.error("Failed to export SVG:", error);
     toast.warn(error.message || "Failed to export SVG");
     state.isGeneratingImage = false;
-  }finally{
+  } finally {
     state.isGeneratingImage = false;
     destoryGeneratingToast();
   }

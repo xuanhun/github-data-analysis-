@@ -40,7 +40,19 @@ const startServer = async () => {
     "https://gitdata.xuanhun520.com",
     "https://localhost:3000",
   ]);
-  const isAllowedOrigin = (origin?: string) => !!origin && ALLOWED_ORIGINS.has(origin);
+  const isAllowedOrigin = (origin?: string, host?: string) => {
+    // If origin is provided, check it against allowed origins
+    if (origin) {
+      return ALLOWED_ORIGINS.has(origin);
+    }
+    // If origin is not provided, check host against allowed origins (add protocol)
+    if (host) {
+      // Try both http and https protocols since host doesn't include protocol
+      return ALLOWED_ORIGINS.has(`https://${host}`) || ALLOWED_ORIGINS.has(`http://${host}`);
+    }
+    // If neither origin nor host is provided, deny access
+    return false;
+  };
 
   // Example request link:
   // /starimg?repos=star-history/star-history&type=Date&theme=light&transparent=false
@@ -180,8 +192,9 @@ const startServer = async () => {
   //get star data  from mongo by repo name, return the star data as json
   router.get("/api/starjson", async (ctx) => {
     const origin = ctx.headers.origin;
-    if (!isAllowedOrigin(origin)) {
-      ctx.throw(403, `${http.STATUS_CODES[403]}: Forbidden`);
+    const host = ctx.headers.host;
+    if (!isAllowedOrigin(origin, host)) {
+      ctx.throw(403, `${http.STATUS_CODES[403]}: origin ${origin || `host ${host}`} is not allowed`);
       return;
     }
     const repos = `${ctx.query["repos"]}`.split(",");
@@ -213,8 +226,9 @@ const startServer = async () => {
 //更新star 数据
   router.post("/api/updatestarjson", async (ctx) => {
     const origin = ctx.headers.origin;
-    if (!isAllowedOrigin(origin)) {
-      ctx.throw(403, `${http.STATUS_CODES[403]}: Forbidden`);
+    const host = ctx.headers.host;
+    if (!isAllowedOrigin(origin, host)) {
+      ctx.throw(403, `${http.STATUS_CODES[403]}: origin ${origin || `host ${host}`} is not allowed`);
       return;
     }
     const repoData: RepoData= ctx.request.body;
