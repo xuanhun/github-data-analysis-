@@ -6,18 +6,16 @@
 
 # Add a live star-history chart to your GitHub README
 
-![star-history-svg-example](/blog/assets/star-history-svg-example.png)
+<img width="1974" height="1580" alt="image" src="https://github.com/user-attachments/assets/412dc876-731f-4ac7-8320-7a4a25b38633" />
+
 Now we support embedding a live star history chart into your GitHub README.  Above is the screenshot from our own [GitHub data analysis](https://github.com/xuanhun/github-data-analysis-).
 
 This feature is quite handy.  A snippet would appear after querying the repository from our star-history.com main page; the only thing you need to do is simply copy that snippet into your GitHub README markdown file.
-![star-history-embed-block](/blog/assets/star-history-embed-block.png)
+<img width="1302" height="903" alt="image" src="https://github.com/user-attachments/assets/74ae1e8b-98c7-4811-a16d-cdf959f820e2" />
+
 Under the hood, it's actually a long story about developing this embedded star history chart.  It all starts from an issue 6 years ago.
 
-## An issue from 6 years ago
 
-In 2016, a user opened an [issue](https://github.com/star-history/star-history/issues/35) asking to embed GitHub star-history chart into their own website.  But due to the development resource and API token limitations, it was dismissed.
-![old-embed-issue](/blog/assets/old-embed-issue.png)
-Recently, we resumed the development effort and after completing a major refactoring of [star-history](https://star-history.com/blog/introducing-the-new-star-history-com), we are ready to tackle this.  Our first improvement is to introduce the embeddable GitHub star-history chart using `<iframe />`.
 
 ## Embed with `<iframe />`
 
@@ -32,7 +30,8 @@ Because GitHub API imposes a strict rate limit on the anonymous callers, we need
 2. Click the `Embed` button below the chart;
 
 3. Input your personal access token;
-   ![embed-chart-with-svg](/blog/assets/embed-chart-with-iframe.png)
+  <img width="745" height="596" alt="image" src="https://github.com/user-attachments/assets/945002e1-3661-452e-82b7-e720e0dda80d" />
+
 
 4. Click the `Copy` button, then paste it into your websites or blogs;
 
@@ -50,7 +49,8 @@ The iframe-based embed block is a decent improvement, while it still has some fl
 1. Open [gitdata.xuanhun520.com](https://gitdata.xuanhun520.com) and query for a repository;
 
 2. Scroll the page below the action buttons;
-   ![embed-chart-with-svg](/blog/assets/embed-chart-with-svg.png)
+   <img width="1513" height="610" alt="image" src="https://github.com/user-attachments/assets/22dde4e3-1720-4083-af59-e53309dcd393" />
+
 3. Click the `Copy` button;
 
 4. Paste the code into your repository's README;
