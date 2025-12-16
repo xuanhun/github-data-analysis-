@@ -3,6 +3,8 @@
 > ⚠️ **Nota de traducción:** Este documento ha sido traducido por IA. Si encuentra algún error, por favor indíquelo. ¡Gracias!
 
 Este proyecto es un fork de <b>star-history/star-history</b> y ha sido mejorado. No fusionará código de vuelta al proyecto original.
+El proyecto actualiza la implementación del gráfico e introduce MongoDB para el almacenamiento en caché de datos, reduciendo las llamadas a la API de GitHub y mejorando el rendimiento.
+Se ha añadido un tema oscuro.
 
 # :sparkles: gitdata analysis :sparkles:
 

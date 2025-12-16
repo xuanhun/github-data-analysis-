@@ -24,12 +24,12 @@
         <span class="text-xs mt-2">{{ sponsor.logoSlogan }}</span>
       </a>
    
-    <a
-      href="mailto:star@bytebase.com?subject=I'm interested in sponsoring star-history.com"
-      target="_blank"
-      class="w-full p-2 text-center bg-gray-50 text-xs leading-6 text-gray-400 rounded hover:underline hover:text-blue-600"
-      >Your logo</a
+    <div
+      class="group w-full p-2 text-center bg-gray-50 text-xs leading-6 text-gray-400 rounded hover:underline hover:text-blue-600"
     >
+      <span class="group-hover:hidden">Your logo</span>
+      <span class="hidden group-hover:inline">send email to 717532978@qq.com</span>
+    </div>
   </div>
 </template>
 

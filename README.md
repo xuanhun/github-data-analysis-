@@ -1,6 +1,10 @@
 <div align="center">
 This project is forked from <b>star-history/star-history</b> and upgraded. It will not merge code back to the original project.
 
+The project updates the chart implementation （[@visactor/vchart](https://www.visactor.com/vchart)) and introduces MongoDB for data caching to reduce GitHub API calls and improve performance.
+Added a dark theme.
+
+
 # :sparkles: gitdata analysis :sparkles:
 
 [**gitdata.xuanhun520.com**](https://gitdata.xuanhun520.com), **provides missing data statistics and visualization capabilities for GitHub repositories, such as star history chart functionality.**

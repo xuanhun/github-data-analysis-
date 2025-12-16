@@ -68,3 +68,9 @@ We provide two ways to embed the real-time star history chart into the web pages
 ---
 
 
+## Future Plans
+
+- Add more editing and annotation features
+- View and edit VChart code, export to VChart official editor
+- Generate star history animated videos (GIF)
+- More GitHub data statistics and analysis features

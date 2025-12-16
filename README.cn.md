@@ -1,5 +1,7 @@
 <div align="center">
 本项目 从 <b>star-history/star-history</b>  fork,进行升级改造。不再向原项目合并代码。
+项目更新了图表实现方式，并引入 MongoDB 进行数据缓存，以减少对 GitHub API 的调用次数，提升性能。
+新增了暗色主题。
 
 # :sparkles: gitdata analysis :sparkles:
 
@@ -148,5 +150,4 @@ pnpm i
   -- 更多的github 数据统计和分析功能
 
     
-
 
