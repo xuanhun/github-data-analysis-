@@ -6,9 +6,9 @@ This project is forked from <b>star-history/star-history</b> and upgraded. It wi
 [**gitdata.xuanhun520.com**](https://gitdata.xuanhun520.com), **provides missing data statistics and visualization capabilities for GitHub repositories, such as star history chart functionality.**
 
 <picture>
-  <source media="(prefers-color-scheme: dark) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date&theme=dark" />
-  <source media="(prefers-color-scheme: light) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
-  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date" />
+  <source media="(prefers-color-scheme: dark) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date" />
+  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date" />
 </picture>
 
 👆 **THIS** is a **`live`** chart created with the following HTML code: 👇
@@ -146,3 +146,14 @@ pnpm i
 - View and edit VChart code, export to VChart official editor
 - Generate star history animated videos (GIF)
 - More GitHub data statistics and analysis features
+
+## Star History
+
+<a href="https://gitdata.xuanhun520.com/#xuanhun/github-data-analysis-&Date">
+<picture >
+  <source media="(prefers-color-scheme: dark) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=xuanhun/github-data-analysis-&type=Date&theme=dark" />
+  <source  media="(prefers-color-scheme: light) and (max-width: 800px)" srcset="https://gitdata.xuanhun520.com/api/starimg?repos=xuanhun/github-data-analysis-&type=Date&theme=light" />
+  <img style="width: 800px; height: 533px;" alt="Star History Chart" src="https://gitdata.xuanhun520.com/api/starimg?repos=xuanhun/github-data-analysis-&type=Date&theme=dark" />
+</picture>
+</a>
+
