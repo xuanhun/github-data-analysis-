@@ -14,5 +14,14 @@
   "sponsor": {
     "title": "赞助商",
     "yourLogo": "你的 Logo"
+  },
+  "repoInputer": {
+    "viewStarHistory": "查看 star 历史",
+    "clearAll": "清空全部"
+  },
+  "embedMarkdown": {
+    "yourRepository": "你的仓库的",
+    "withCode": "使用以下代码",
+    "copyToReadme": "复制到 GitHub README.md"
   }
 }

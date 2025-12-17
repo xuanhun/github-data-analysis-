@@ -2,6 +2,21 @@
 
 > **Important Notice:** This application is based on [star-history/star-history](https://github.com/star-history/star-history) and has been modified and upgraded. We will continue to add more data analysis features. We express our sincere gratitude to the original authors! This document has also been modified and improved based on the original repository's documentation.
 
+New repository: [github-data-analysis-](https://github.com/xuanhun/github-data-analysis-)
+
+We updated the chart implementation and introduced MongoDB-based caching to reduce GitHub API calls and improve performance.
+
+Added a dark theme.
+
+---
+
+---
+
+# Data query and image download
+We provide direct data query and image download capabilities, but you need to supply your GitHub personal access token. The system does not store your token on the server side.
+
+Directly embedding chart images currently does not require your token. However, contributions are appreciated because GitHub rate limits may affect usage. We use MongoDB to cache data to mitigate this impact as much as possible.
+
 ---
 
 # Add a live star-history chart to your GitHub README
@@ -60,17 +75,20 @@ The iframe-based embed block is a decent improvement, while it still has some fl
 
 ## Conclusion
 
-We provide two ways to embed the real-time star history chart into the web pages.
+We provide two ways to embed the real-time star history chart into web pages.
 
-- If you want to put an auto-sizeable and interactive chart on your private network, you should try the embedded chart with `<iframe />`.
-- If you want to show a static chart with update-to-date star history data to the public, such as putting it on the GitHub repository README, you should use the image link such as `https://gitdata.xuanhun520.com/api/starimg?repos=viactor/vchart&type=Date&theme=dark`
+- If you want to put an auto-sizeable and interactive chart on your private network, try the embedded chart with `<iframe />`.
+- If you want to show a static chart with up-to-date star history data to the public (e.g. in your GitHub README), use the image link such as:
+
+```
+https://gitdata.xuanhun520.com/api/starimg?repos=visactor/vchart&type=Date&theme=dark
+```
 
 ---
 
 
 ## Future Plans
 
-- Add more editing and annotation features
-- View and edit VChart code, export to VChart official editor
-- Generate star history animated videos (GIF)
-- More GitHub data statistics and analysis features
+- Add more data analysis capabilities, such as forks history charts and contributor activity charts.
+- Add user authentication to support analysis for private repositories.
+- Add more visualization forms, including infographics and animated charts.

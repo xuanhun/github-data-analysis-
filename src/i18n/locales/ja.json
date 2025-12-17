@@ -14,5 +14,14 @@
   "sponsor": {
     "title": "スポンサー",
     "yourLogo": "あなたのロゴ"
+  },
+  "repoInputer": {
+    "viewStarHistory": "スター履歴を見る",
+    "clearAll": "すべてクリア"
+  },
+  "embedMarkdown": {
+    "yourRepository": "あなたのリポジトリの",
+    "withCode": "次のコードを使用",
+    "copyToReadme": "GitHub README.md にコピー"
   }
 }

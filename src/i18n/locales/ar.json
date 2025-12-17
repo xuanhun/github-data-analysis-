@@ -14,5 +14,14 @@
   "sponsor": {
     "title": "الرعاة",
     "yourLogo": "شعارك"
+  },
+  "repoInputer": {
+    "viewStarHistory": "عرض سجل النجوم",
+    "clearAll": "مسح الكل"
+  },
+  "embedMarkdown": {
+    "yourRepository": "لمستودعك",
+    "withCode": "باستخدام الكود التالي",
+    "copyToReadme": "نسخ إلى GitHub README.md"
   }
 }

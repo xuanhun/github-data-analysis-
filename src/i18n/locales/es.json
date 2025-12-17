@@ -14,5 +14,14 @@
   "sponsor": {
     "title": "Patrocinadores",
     "yourLogo": "Tu logo"
+  },
+  "repoInputer": {
+    "viewStarHistory": "Ver historial de estrellas",
+    "clearAll": "Borrar todo"
+  },
+  "embedMarkdown": {
+    "yourRepository": "de tu repositorio",
+    "withCode": "con el siguiente código",
+    "copyToReadme": "Copiar a GitHub README.md"
   }
 }

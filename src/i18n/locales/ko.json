@@ -14,5 +14,14 @@
   "sponsor": {
     "title": "스폰서",
     "yourLogo": "당신의 로고"
+  },
+  "repoInputer": {
+    "viewStarHistory": "스타 히스토리 보기",
+    "clearAll": "전체 지우기"
+  },
+  "embedMarkdown": {
+    "yourRepository": "리포지토리의",
+    "withCode": "다음 코드로",
+    "copyToReadme": "GitHub README.md에 복사"
   }
 }

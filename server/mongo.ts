@@ -1,14 +1,7 @@
 import { MongoClient, Db, Collection } from "mongodb";
 import logger from "./logger";
 
-// Load environment variables from .env file
-try {
-  // Try to load dotenv if available
-  require("dotenv").config();
-} catch (error) {
-  // dotenv not installed, use environment variables directly
-  logger.debug("dotenv not available, using environment variables");
-}
+
 
 // MongoDB 数据结构类型定义
 export interface RepoCacheData {

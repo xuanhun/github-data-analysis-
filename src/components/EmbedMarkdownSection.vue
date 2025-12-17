@@ -13,7 +13,7 @@
         >README.md</a
       >
       <span v-else class="font-mono font-bold text-gray-500">README.md</span>
-      with the following code (<a
+      {{ i18n.t('embedMarkdown.withCode') }} (<a
         class="font-mono font-bold underline text-blue-500 hover:opacity-80"
         :href="`https://github.com/xuanhun/github-data-analysis-`"
         target="_blank"
@@ -30,7 +30,7 @@
           style="width: 100%; border-bottom-right-radius: 0;"
           @click="handleCopyBtnClick"
         >
-          Copy to GitHub README.md
+          {{ i18n.t('embedMarkdown.copyToReadme') }}
         </p>
         
   
@@ -44,6 +44,7 @@ import { computed } from "vue";
 import utils from "../../common/utils";
 import toast from "../helpers/toast";
 import useAppStore from "../store";
+import { i18n } from "../i18n";
 
 const store = useAppStore();
 const singleRepo = computed(() => {
@@ -57,7 +58,7 @@ const repoText = computed(() => {
   if (singleRepo.value) {
     return singleRepo.value.split("/")[1];
   } else {
-    return "your repository's";
+    return i18n.t('embedMarkdown.yourRepository');
   }
 });
 

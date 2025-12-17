@@ -22,7 +22,7 @@
         :class="isFetching ? 'cursor-wait' : ''"
         @click="handleAddRepoBtnClick"
       >
-        View star history
+        {{ i18n.t('repoInputer.viewStarHistory') }}
       </button>
     </div>
     <!-- repo list -->
@@ -60,7 +60,7 @@
           class="leading-8 mb-2 text-black hover:bg-gray-100 px-3 rounded border border-transparent"
           @click="handleClearAllRepoBtnClick"
         >
-          Clear all
+          {{ i18n.t('repoInputer.clearAll') }}
         </button>
       </div>
     </div>
@@ -73,6 +73,7 @@ import { head } from "lodash";
 import { GITHUB_REPO_URL_REG } from "../helpers/consts";
 import toast from "../helpers/toast";
 import useAppStore from "../store";
+import { i18n } from "../i18n";
 
 interface State {
   repo: string;

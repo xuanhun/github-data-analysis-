@@ -4,15 +4,33 @@ import fs from "fs";
 import path from "path";
 import Koa from "koa";
 import Router from "@koa/router";
-
-
 import cors from "@koa/cors";
 import bodyParser from "@koa/bodyparser";
+import dotenv from 'dotenv'
+
+const initEnv = () => {
+  const candidates = [
+    path.resolve(process.cwd(), ".env"),
+    path.resolve(__dirname, "../.env"),
+    path.resolve(__dirname, "../../.env"),
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      dotenv.config({ path: p });
+      break;
+    }
+  }
+}
+initEnv();
+
+
+
 import { optimize, Config } from 'svgo';
 import logger from "./logger";
 import XYChart from "../packages/xy-chart";
 import { convertStarDataToChartData, getRepoData } from "../common/chart";
-
+const Canvas = require('canvas');
+const { convertVChartToSvg } = require('@visactor/vchart-svg-plugin');
 import { RepoData } from "../types/chart";
 import {
   getChartWidthWithSize,
@@ -25,11 +43,14 @@ import { CHART_SIZES, CHART_TYPES, MAX_REQUEST_AMOUNT } from "./const";
 import { getRepoStarRecordsFromCache } from "./server_api";
 import api from "../common/api";
 import { updateRepoData } from "./mongo";
-const Canvas = require('canvas');
-const { convertVChartToSvg } = require('@visactor/vchart-svg-plugin');
+
 import { RepoImageCache } from "./cache";
+import { trackApiEvent } from "./analytics";
+
+
 
 const startServer = async () => {
+  
   await initTokenFromEnv();
 
   const app = new Koa();
@@ -140,7 +161,7 @@ const startServer = async () => {
         const svgC = replaceSVGContentFilterWithCamelcase(svg);
         //写入缓存
         RepoImageCache.set(repos.join(",") + theme, svgC, png);
-
+        void trackApiEvent(ctx, "generate_chart_img", { repo: repos.join(","), type, size, theme, transparent, imgType });
 
       }
       catch (error: any) {
@@ -221,9 +242,10 @@ const startServer = async () => {
     ctx.set("date", `${now}`);
     ctx.set("expires", `${now}`);
     ctx.body = responseData;
+    void trackApiEvent(ctx, "starjson", { repos: repos.join(","), returned: responseData.repos.length });
   });
 
-//更新star 数据
+  //更新star 数据
   router.post("/api/updatestarjson", async (ctx) => {
     const origin = ctx.headers.origin;
     const host = ctx.headers.host;
@@ -231,12 +253,11 @@ const startServer = async () => {
       ctx.throw(403, `${http.STATUS_CODES[403]}: origin ${origin || `host ${host}`} is not allowed`);
       return;
     }
-    const repoData: RepoData= ctx.request.body;
-    if(!repoData || !repoData.repo || !repoData.starRecords || repoData.starRecords.length === 0 || !repoData.logoUrl) {
+    const repoData: RepoData = ctx.request.body;
+    if (!repoData || !repoData.repo || !repoData.starRecords || repoData.starRecords.length === 0 || !repoData.logoUrl) {
       ctx.throw(400, `${http.STATUS_CODES[400]}: Bad Request`);
       return;
-    }else
-    {
+    } else {
       await updateRepoData(repoData.repo, { starLogs: repoData.starRecords, logo: repoData.logoUrl });
     }
 
@@ -245,7 +266,8 @@ const startServer = async () => {
     ctx.set("cache-control", "no-cache");
     ctx.set("date", `${now}`);
     ctx.set("expires", `${now}`);
-    ctx.body = {message: "success"};
+    ctx.body = { message: "success" };
+    void trackApiEvent(ctx, "updatestarjson", { repo: repoData.repo, records: repoData.starRecords.length });
   });
 
 
@@ -254,7 +276,7 @@ const startServer = async () => {
     logger.error("server error: ", err);
   });
 
-  app.use(bodyParser({ enableTypes: ["json"],  jsonLimit: "10mb" }));
+  app.use(bodyParser({ enableTypes: ["json"], jsonLimit: "10mb" }));
 
   app.use(router.routes()).use(router.allowedMethods());
 
