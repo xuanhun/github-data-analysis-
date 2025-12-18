@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "build:server": "pnpm i && cd server && pnpm i && pnpm build",
-    "build:extension": "vite build --mode extension"
+    "build:extension": "vite build --mode extension",
+    "deploy:web": "bash scripts/deploy-web.sh"
   },
   "dependencies": {
     "@tailwindcss/line-clamp": "^0.4.0",
