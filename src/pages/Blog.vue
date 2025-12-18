@@ -74,10 +74,21 @@
               <span> {{ state.blog.readingTime }} </span>
             </div>
           </div>
-          <div
-            class="blog-content-container w-full max-w-5xl prose prose-indigo prose-xl md:prose-2xl"
-            v-html="state.parsedBlogHTML"
-          ></div>
+        <div
+          class="blog-content-container w-full max-w-5xl prose prose-indigo prose-xl md:prose-2xl"
+          v-html="state.parsedBlogHTML"
+        ></div>
+        <div class="w-full max-w-5xl mt-8 flex justify-center items-center">
+          <a
+            :href="shareHref"
+            target="_blank"
+            rel="noopener"
+            class="px-4 py-2 h-full text-base rounded-md bg-blue-600 text-white shadow hover:bg-blue-700 flex items-center"
+          >
+            <i class="fab fa-twitter mr-2"></i>
+            Share on X
+          </a>
+        </div>
           <div
             v-if="!state.isLoading && state.blog === undefined"
             class="w-full h-10 flex flex-col justify-center items-center"
@@ -112,7 +123,7 @@
 
 <script lang="ts" setup>
 import { marked } from "marked";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, computed } from "vue";
 import { useRoute } from "vue-router";
 import utils from "../../common/utils";
 import Footer from "../components/Footer.vue";
@@ -149,6 +160,16 @@ onMounted(async () => {
   };
   state.parsedBlogHTML = marked.parse(content);
   state.isLoading = false;
+});
+
+const shareHref = computed(() => {
+  const title = encodeURIComponent(state.blog?.title || "");
+  const url = encodeURIComponent(
+    typeof window !== "undefined"
+      ? window.location.href
+      : `https://gitdata.xuanhun520.com/blog/${state.blog?.slug || ""}`
+  );
+  return `https://x.com/intent/tweet?text=${title}&url=${url}`;
 });
 </script>
 
