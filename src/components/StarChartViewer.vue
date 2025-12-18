@@ -337,8 +337,8 @@ const handleShareToTwitterBtnClick = async () => {
   const addtionLink =
     repos.length === 1 ? `github.com/${repos[0]}` : starhistoryLink;
   text += `${addtionLink}%0A%0A`;
-  text += `${encodeURIComponent("#starhistory #GitHub #OpenSource ")}`;
-  const tweetShareLink = `https://twitter.com/intent/tweet?text=${text}%0A&via=StarHistoryHQ`;
+  text += `${encodeURIComponent("#starhistory #GitHub #OpenSource #DataVisualization #VChart #VisActor #XuanHun")}`;
+  const tweetShareLink = `https://twitter.com/intent/tweet?text=${text}%0A&via=xuanhun1`;
   const link = document.createElement("a");
   link.href = tweetShareLink;
   link.target = "_blank";
