@@ -15,13 +15,13 @@ let index = 0;
 
 export const initTokenFromEnv = async () => {
   if (!fs.existsSync(envFilePath)) {
-    logger.error("Token file not found with path ", envFilePath);
-    process.exit(-1);
+    logger.warn("Token file not found with path ", envFilePath);
+    return;
   }
   const envTokenString = fs.readFileSync(envFilePath).toString();
   if (!envTokenString) {
-    logger.error("Token not found");
-    process.exit(-1);
+    logger.warn("Token not found");
+    return;
   }
 
   const tokenList = envTokenString.split(/\r?\n/);
@@ -36,8 +36,8 @@ export const initTokenFromEnv = async () => {
   }
 
   if (savedTokens.length === 0) {
-    logger.error("No usable token");
-    process.exit(-1);
+    logger.warn("No usable token");
+    return;
   }
 
   logger.info(`Usable token amount: ${savedTokens.length}`);
@@ -45,6 +45,7 @@ export const initTokenFromEnv = async () => {
 
 // Get the next token for requests.
 export const getNextToken = () => {
+  if (savedTokens.length === 0) return "";
   index = (index + 1) % savedTokens.length;
   return savedTokens[index];
 };

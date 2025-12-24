@@ -41,6 +41,7 @@ const props = defineProps({
     default: "light",
   },
   timeFormat: String,
+  lastRecords: Array as PropType<unknown>,
 });
 
 const chartContainerElRef = ref<HTMLDivElement>();
@@ -51,10 +52,14 @@ defineExpose({
   getChartInstance: () => chartInstanceRef.value,
 });
 
-const drawStarChart = (data: IDataType) => {
+const drawStarChart = (data: IDataType, lastRecords?: [{
+  repo: string,
+  date: number,
+  count: number,
+}]) => {  
   if (chartContainerElRef.value) {
     chartContainerElRef.value.innerHTML = "";
-
+    chartContainerElRef.value.style.width = "fit-content";
     const chart = XYChart(
       chartContainerElRef.value,
       {
@@ -65,6 +70,7 @@ const drawStarChart = (data: IDataType) => {
         showDots: true,
         transparent: false,
         theme: props.theme as "light" | "dark",
+        lastRecords: lastRecords,
       }
     );
     chartInstanceRef.value = chart;
@@ -75,10 +81,9 @@ const drawStarChart = (data: IDataType) => {
 onMounted(() => {
   if (props.data) {
     console.log(props.data);
-    drawStarChart(toRaw(props.data));
+    drawStarChart(toRaw(props.data), toRaw(props.lastRecords as any));
   }
-
-  // Scale chart to a suitable mobile view.
+// Scale chart to a suitable mobile view.
   if (window.innerWidth < MIN_CHART_WIDTH) {
     if (chartContainerElRef.value) {
       const scaleRate = window.innerWidth / MIN_CHART_WIDTH;
@@ -93,11 +98,12 @@ onMounted(() => {
       }
     }
   }
+  
 });
 
 onUpdated(() => {
   if (props.data) {
-    drawStarChart(toRaw(props.data));
+    drawStarChart(toRaw(props.data), toRaw(props.lastRecords as any));
   }
 });
 

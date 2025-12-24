@@ -9,12 +9,13 @@
       <label for="theme">Theme</label>
       <select id="theme" v-model="state.theme" class="w-[100px] border-2 border-blue-500 rounded"
         @change="handleThemeChange">
+         <option value="dark">Dark</option>
         <option value="light">Light</option>
-        <option value="dark">Dark</option>
+       
       </select>
     </div>
     <StarXYChart v-if="state.chartData" ref="starChartRef" classname="w-full h-auto mt-4" :data="state.chartData"
-      :theme="state.theme" />
+      :theme="state.theme" :lastRecords="state.lastRecords" />
   </div>
   <div v-if="state.chartData"
     class="relative mt-4 mb-4 w-full px-3 mx-auto max-w-4xl flex flex-row flex-wrap justify-between items-center">
@@ -98,6 +99,7 @@ interface State {
   showGenEmbedCodeDialog: boolean;
   showEmbedChartGuideDialog: boolean;
   theme: string;
+  lastRecords: any;
 }
 
 const state = reactive<State>({
@@ -108,7 +110,8 @@ const state = reactive<State>({
   showSetTokenDialog: false,
   showGenEmbedCodeDialog: false,
   showEmbedChartGuideDialog: false,
-  theme: "light",
+  theme: "dark",
+  lastRecords: [],
 });
 const store = useAppStore();
 
@@ -152,6 +155,7 @@ const fetchReposData = async (repos: string[]) => {
           starData: starRecords,
           logoUrl,
         });
+
       }
     }
 
@@ -167,6 +171,8 @@ const fetchReposData = async (repos: string[]) => {
   store.setIsFetching(false);
 
   const repoData: RepoData[] = [];
+  const lastRecords: any = [];
+
   for (const repo of repos) {
     const cachedRepo = state.repoCacheMap.get(repo);
     if (cachedRepo) {
@@ -175,8 +181,15 @@ const fetchReposData = async (repos: string[]) => {
         starRecords: cachedRepo.starData,
         logoUrl: cachedRepo.logoUrl,
       });
+      lastRecords.push({
+        repo,
+        date: new Date(cachedRepo.starData[cachedRepo.starData.length - 1].date).getTime(),
+        count: cachedRepo.starData[cachedRepo.starData.length - 1].count,
+      });
     }
   }
+  state.lastRecords = lastRecords;
+
 
   if (repoData.length === 0) {
     state.chartData = undefined;
@@ -212,6 +225,7 @@ const handleGenerateImageBtnClick = async () => {
   try {
     // 获取图表实例
     const chartInstance = starChartRef.value?.getChartInstance();
+
     if (!chartInstance) {
       toast.warn("Chart not ready");
       state.isGeneratingImage = false;

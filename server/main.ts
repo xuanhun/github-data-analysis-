@@ -29,7 +29,7 @@ import { optimize, Config } from 'svgo';
 import logger from "./logger";
 import XYChart from "../packages/xy-chart";
 import { convertStarDataToChartData, getRepoData } from "../common/chart";
-const Canvas = require('canvas');
+let Canvas: any;
 const { convertVChartToSvg } = require('@visactor/vchart-svg-plugin');
 import { RepoData } from "../types/chart";
 import {
@@ -51,7 +51,7 @@ import { trackApiEvent } from "./analytics";
 
 const startServer = async () => {
   
-  await initTokenFromEnv();
+  try { await initTokenFromEnv(); } catch {}
 
   const app = new Koa();
   app.use(cors());
@@ -60,6 +60,8 @@ const startServer = async () => {
   const ALLOWED_ORIGINS = new Set([
     "https://gitdata.xuanhun520.com",
     "https://localhost:3000",
+    "https://xuanhun520.com",
+    "https://www.xuanhun520.com",
   ]);
   const isAllowedOrigin = (origin?: string, host?: string) => {
     // If origin is provided, check it against allowed origins
@@ -84,7 +86,7 @@ const startServer = async () => {
     const repos = `${ctx.query["repos"]}`.split(",");
     let type = `${ctx.query["type"]}` as ChartMode;
     let size = `${ctx.query["size"]}`;
-    let imgType = `${ctx.query["imgtype"]}` == "undefined" ? "png" : `${ctx.query["imgtype"]}`; //png or svg
+    let imgType = `${ctx.query["imgtype"]}` == "undefined" ? "png" : `${ctx.query["imgtype"]}`;
 
     if (!CHART_TYPES.includes(type)) {
       type = "Date";
@@ -138,6 +140,9 @@ const startServer = async () => {
           await updateRepoData(repoDataItem.repo, { starLogs: repoDataItem.starRecords, logo: repoDataItem.logoUrl });
         }
 
+        if (!Canvas && imgType === "png") {
+          try { Canvas = require("canvas"); } catch { imgType = "svg"; }
+        }
         const chart = XYChart(
           null,
           {

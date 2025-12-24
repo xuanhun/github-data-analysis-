@@ -23,6 +23,11 @@ export interface XYChartConfig {
   theme?: "light" | "dark";
   mode?: string,
   modeParams?: any,
+  lastRecords?: [{
+    repo: string,
+    date: number,
+    count: number,
+  }]
 }
 
 
@@ -87,22 +92,23 @@ export const generateDefaultVChartLineSpec = (
         },
       },
     ],
-    
+
     line: {
       style: {
 
         lineWidth: 2,
       },
     },
+  
     tooltip: {
       dimension: {
         title: {
           valueTimeFormat: '%Y-%m-%d'
         }
-     
+
       }
     },
-  
+
     crosshair: {
       xField: {
         visible: true,
@@ -111,11 +117,11 @@ export const generateDefaultVChartLineSpec = (
           style: {
             lineWidth: 1,
             opacity: 1,
-        
+
             lineDash: [2, 2]
           }
         },
-     
+
         label: {
           visible: true, // label is off by default
           formatter: '{label:%Y-%m-%d}',
@@ -123,13 +129,13 @@ export const generateDefaultVChartLineSpec = (
       },
       yField: {
         visible: true,
-   
-       
+
+
         line: {
           style: {
             lineWidth: 1,
             opacity: 1,
-  
+
             lineDash: [2, 2]
           }
         },
@@ -143,7 +149,7 @@ export const generateDefaultVChartLineSpec = (
   if (transparent) {
     spec.background = "transparent";
   }
-  if (isDark ) {
+  if (isDark) {
     spec.theme = customDarkTheme as ITheme;
   } else {
     spec.theme = customLightTheme as ITheme;
@@ -151,21 +157,62 @@ export const generateDefaultVChartLineSpec = (
   return spec;
 };
 
+const getMarkPoint = (lastRecords?: [{
+  repo: string,
+  date: number,
+  count: number,
+}]) => {
+  if (!lastRecords) {
+    return [];
+  }
+  const markPoints = lastRecords.map((item) => ({
+    coordinate: {
+      x: item.date,
+      y: item.count,
+      series: item.repo,
+    },
+    itemContent: {
+      offsetY: -10,
+      offsetX: 0,
+      type: 'text',
+      // 是否自动旋转
+      autoRotate: false,
+      // 是否强制限制在画布内
+      confine: false,
+      // 自动旋转时, 平行方向偏移
+      refX: 0,
+      // 自动旋转时, 垂直方向偏移
+      refY: 0,
+      // type为'text'时, 额外封装的label
+      text: {
+        style: {
+          text: `${item.repo}:${item.count}`,
+          fill: 'red',
+          stroke: 'white',
+        }
+      },
+    },
+    targetSymbol: {
+      visible: true,
+    },
+  }));
+ return markPoints;
+}
 
 
-let  customLightTheme:ITheme|null=null;
-let  customDarkTheme:ITheme|null=null;
+let customLightTheme: ITheme | null = null;
+let customDarkTheme: ITheme | null = null;
 
 const XYChart = (
   container: HTMLDivElement,
-  { title, xLabel, yLabel, data, showDots, theme, transparent, mode, modeParams }: XYChartConfig
+  { title, xLabel, yLabel, data, showDots, theme, transparent, mode, modeParams, lastRecords }: XYChartConfig
 ): VChart => {
-  if(customLightTheme === null || customDarkTheme === null) {
-    customLightTheme =VChart.ThemeManager.getTheme("light")
+  if (customLightTheme === null || customDarkTheme === null) {
+    customLightTheme = VChart.ThemeManager.getTheme("light")
     customLightTheme.fontFamily = "xkcd";
-    customDarkTheme =VChart.ThemeManager.getTheme("dark")
+    customDarkTheme = VChart.ThemeManager.getTheme("dark")
     customDarkTheme.fontFamily = "xkcd";
- 
+
   }
 
   const options: ILineChartSpec = {
@@ -176,7 +223,7 @@ const XYChart = (
   if (title) {
     options.title = {
       text: title,
-      align:"center",
+      align: "center",
       textStyle: {
         fontSize: 24
       },
@@ -198,13 +245,24 @@ const XYChart = (
       };
     }
   }
-  if(mode==="node") {
-    return new VChart(options, { mode, modeParams ,dpr:2});
+  //add mark point
+
+  options.markPoint = getMarkPoint(lastRecords);
+  var chart;
+
+  if (mode === "node") {
+    chart = new VChart(options, { mode, modeParams, dpr: 2 });
+
+  }
+  else {
+    chart = new VChart(options, { dom: container, dpr: window.devicePixelRatio });
 
   }
 
-  return new VChart(options, { dom: container ,dpr:window.devicePixelRatio});
+  return chart;
 };
+
+
 
 export default XYChart;
 
