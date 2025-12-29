@@ -58,7 +58,7 @@
 
 
   <TokenSettingDialog v-if="state.showSetTokenDialog" @close="handleSetTokenDialogClose" />
-  <GenerateEmbedCodeDialog v-if="state.showGenEmbedCodeDialog" @close="handleGenEmbedCodeDialogClose" />
+  <GenerateEmbedCodeDialog v-if="state.showGenEmbedCodeDialog" @close="handleGenEmbedCodeDialogClose" :token="state.token" />
   <!-- embed chart guide dialog -->
   <EmbedChartGuideDialog v-if="state.showEmbedChartGuideDialog" @close="state.showEmbedChartGuideDialog = false" />
 </template>
@@ -100,6 +100,7 @@ interface State {
   showEmbedChartGuideDialog: boolean;
   theme: string;
   lastRecords: any;
+  token: string;
 }
 
 const state = reactive<State>({
@@ -112,6 +113,7 @@ const state = reactive<State>({
   showEmbedChartGuideDialog: false,
   theme: "dark",
   lastRecords: [],
+  token: "",
 });
 const store = useAppStore();
 
@@ -120,9 +122,15 @@ const starChartRef = ref<InstanceType<typeof StarXYChart> | null>(null);
 
 const isFetching = computed(() => {
   return store.isFetching;
+  
 });
 
 onMounted(() => {
+  store.setTheme(state.theme);
+  state.token = store.token;
+  if (state.token.length === 0) {
+    state.showSetTokenDialog = true;
+  }
   if (store.repos.length > 0) {
     fetchReposData(store.repos);
   }

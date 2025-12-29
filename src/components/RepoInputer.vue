@@ -114,12 +114,12 @@ watch(
       }
     }
 
-    let hash = "";
+    let search = "";
     if (store.repos.length > 0) {
-      hash = `#${store.repos.join("&")}&${store.chartMode}`;
+      search = `repos=${store.repos.join(",")}&type=${store.chartMode}`;
     }
     // Sync location hash only right here
-    window.location.hash = hash;
+    window.location.search = search;
   }
 );
 

@@ -17,6 +17,7 @@
       classname="w-full h-auto"
       :data="state.chartData as IDataType"
       :theme="state.theme"
+      :lastRecords="state.lastRecords"
     />
   </a>
 </template>
@@ -27,7 +28,7 @@ import { ChartMode, RepoStarData } from "../../types/chart";
 import { IDataType } from "@visactor/vchart";
 import {
   convertStarDataToChartData,
-  getReposStarData,
+  getRepoData,
 } from "../../common/chart";
 import { MIN_CHART_WIDTH } from "../helpers/consts";
 import toast from "../helpers/toast";
@@ -43,6 +44,7 @@ interface State {
   isFetching: boolean;
   repos: string[];
   theme: string;
+  lastRecords: { repo: string, date: number, count: number }[];
 }
 
 const state = reactive<State>({
@@ -51,10 +53,11 @@ const state = reactive<State>({
   isFetching: true,
   repos: [],
   theme: "light",
+  lastRecords: [],
 });
 const containerElRef = ref<HTMLDivElement | null>(null);
 const starHistoryLink = computed(() => {
-  return `https://gitdata.xuanhun520.com/#${state.repos.join("&")}&${
+  return `https://gitdata.xuanhun520.com?repos=${state.repos.join(",")}&type=${
     state.chartMode
   }&theme=${state.theme}`;
 });
@@ -80,25 +83,29 @@ onMounted(() => {
   containerElRef.value.style.height = `${height}px`;
 
   const search = window.location.search.slice(1);
-  const hash = window.location.hash.slice(1);
-  const params = hash.split("&").filter((i) => Boolean(i));
+
+  const params = search.split("&").filter((i) => Boolean(i));
   const repos: string[] = [];
   let token = "";
 
-  for (const s of search.split("&")) {
-    if (s.startsWith("secret=")) {
-      token = atob(s.slice(7));
-      break;
-    }
-  }
+  
 
   for (const value of params) {
-    if (value === "Date" || value === "Timeline") {
-      state.chartMode = value;
+    if (value === "type=Date" || value === "type=Timeline") {
+      state.chartMode = value.split("=")[1] as ChartMode;
       continue;
     }
-    if (!repos.includes(value)) {
-      repos.push(value);
+    if (value.startsWith("theme=")) {
+      state.theme = value.split("=")[1];
+      continue;
+    }
+    if (value.startsWith("repos=") && !repos.includes(value)) {
+      repos.push(...value.split("=")[1].split(","));
+      continue;
+    }
+    if (value.startsWith("secret=")) {
+      token = value.split("=")[1];
+      continue;
     }
   }
 
@@ -110,9 +117,14 @@ const fetchReposStarData = async (repos: string[], token: string) => {
   state.isFetching = true;
   const reposStarData: RepoStarData[] = [];
   try {
-    const data = await getReposStarData(repos, token);
+    const data = await getRepoData(repos, token);
     for (const d of data) {
       reposStarData.push(d);
+      state.lastRecords.push({
+        repo: d.repo,
+        date: new Date(d.starRecords[d.starRecords.length - 1].date).getTime(),
+        count: d.starRecords[d.starRecords.length - 1].count,
+      });
     }
   } catch (error: any) {
     toastWarn(error.message);
@@ -120,18 +132,10 @@ const fetchReposStarData = async (repos: string[], token: string) => {
   }
   state.isFetching = false;
 
-  if (reposStarData.length === 0) {
-    state.chartData = undefined;
-  } else {
-    reposStarData.sort((d1, d2) => {
-      return (
-        Math.max(...d2.starRecords.map((s) => s.count)) -
-        Math.max(...d1.starRecords.map((s) => s.count))
-      );
-    });
+  
     state.chartData = convertStarDataToChartData(
       reposStarData
     );
-  }
+  
 };
 </script>

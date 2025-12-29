@@ -15,18 +15,22 @@ interface AppState {
 const useAppStore = defineStore("appStore", {
   state: (): AppState => {
     const { accessTokenCache } = storage.get(["accessTokenCache"]);
-    const hash = window.location.hash.slice(1);
-    const params = hash.split("&").filter((i) => Boolean(i));
+    const search = window.location.search.slice(1);
+    const params = search.split("&").filter((i) => Boolean(i));
     const repos: string[] = [];
     let chartMode: ChartMode = "Date";
-
+    let theme: string = "light";
     for (const value of params) {
-      if (value === "Date" || value === "Timeline") {
-        chartMode = value;
+      if (value === "type=Date" || value === "type=Timeline") {
+        chartMode = value.split("=")[1] as ChartMode;
         continue;
       }
-      if (!repos.includes(value)) {
-        repos.push(value);
+      if (value.startsWith("theme=")) {
+          theme = value.split("=")[1];
+          continue;
+      }
+      if (value.startsWith("repos=") && !repos.includes(value)) {
+        repos.push(...value.split("=")[1].split(","));
       }
     }
 
@@ -35,7 +39,7 @@ const useAppStore = defineStore("appStore", {
       token: accessTokenCache || "",
       repos: repos,
       chartMode: chartMode,
-      theme: "light",
+      theme: theme,
     };
   },
   actions: {

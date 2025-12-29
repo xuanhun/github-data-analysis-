@@ -50,8 +50,8 @@ import { trackApiEvent } from "./analytics";
 
 
 const startServer = async () => {
-  
-  try { await initTokenFromEnv(); } catch {}
+
+  try { await initTokenFromEnv(); } catch { }
 
   const app = new Koa();
   app.use(cors());
@@ -143,6 +143,19 @@ const startServer = async () => {
         if (!Canvas && imgType === "png") {
           try { Canvas = require("canvas"); } catch { imgType = "svg"; }
         }
+        var lastRecords : { repo: string; date: number; count: number; }[]= [];
+        if (repoData?.length > 0) {
+          repoData.forEach(item => {
+            lastRecords.push(
+              {
+                date: new Date(item.starRecords[item.starRecords.length - 1].date).getTime(),
+                count: item.starRecords[item.starRecords.length - 1].count,
+                repo: item.repo,
+              }
+            );
+          }
+          );
+        }
         const chart = XYChart(
           null,
           {
@@ -154,7 +167,8 @@ const startServer = async () => {
             transparent: false,
             theme: theme as "light" | "dark",
             mode: "node",
-            modeParams: Canvas
+            modeParams: Canvas,
+            lastRecords
           }
         );
 
@@ -193,16 +207,16 @@ const startServer = async () => {
 
         ctx.type = "image/svg+xml;charset=utf-8";
         ctx.set("cache-control", "no-cache");
-        ctx.set("date", `${now}`);
-        ctx.set("expires", `${now}`);
+        ctx.set("date", now.toUTCString());
+        ctx.set("expires", now.toUTCString());
         ctx.body = optimized;
       }
       else if (imgType === "png") {
         const pngBuffer = Buffer.from(imageContent, "base64");
         ctx.type = "image/png";
         ctx.set("cache-control", "no-cache");
-        ctx.set("date", `${now}`);
-        ctx.set("expires", `${now}`);
+        ctx.set("date", now.toUTCString());
+        ctx.set("expires", now.toUTCString());
         ctx.body = pngBuffer;
       }
     } catch (error) {
@@ -244,8 +258,8 @@ const startServer = async () => {
     const now = new Date();
     ctx.type = "application/json";
     ctx.set("cache-control", "no-cache");
-    ctx.set("date", `${now}`);
-    ctx.set("expires", `${now}`);
+    ctx.set("date", now.toUTCString());
+    ctx.set("expires", now.toUTCString());
     ctx.body = responseData;
     void trackApiEvent(ctx, "starjson", { repos: repos.join(","), returned: responseData.repos.length });
   });
@@ -269,8 +283,8 @@ const startServer = async () => {
     const now = new Date();
     ctx.type = "application/json";
     ctx.set("cache-control", "no-cache");
-    ctx.set("date", `${now}`);
-    ctx.set("expires", `${now}`);
+    ctx.set("date", now.toUTCString());
+    ctx.set("expires", now.toUTCString());
     ctx.body = { message: "success" };
     void trackApiEvent(ctx, "updatestarjson", { repo: repoData.repo, records: repoData.starRecords.length });
   });

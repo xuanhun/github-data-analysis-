@@ -30,7 +30,7 @@
         </p>
         <br />
         <p>
-          Star-history will need your
+          GitData.xuanhun520.com will need your
           <a
             class="text-blue-500"
             href="https://github.com/settings/tokens"

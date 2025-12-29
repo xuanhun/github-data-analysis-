@@ -141,7 +141,7 @@ const embedCode = computed(() => {
     return "Please fill in the token and repositories to generate embed code.";
   }
   const secret = btoa(state.token);
-  return `<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="${window.location.origin}/embed?secret=${secret}#${repos.value.join("&")}&${state.chartMode}" frameBorder="0"></iframe>`;
+  return `<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="${window.location.origin}/embed?secret=${secret}&${repos.value.join(",")}&type=${state.chartMode}&theme=${state.theme}" frameBorder="0"></iframe>`;
 });
 
 const canPreview = computed(() => {

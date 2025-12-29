@@ -14,7 +14,7 @@
       </header>
       <main class="w-full flex flex-col justify-start items-start p-4 pr-5">
         <p>
-          Star-history will need your
+          GitData.xuanhun520.com will need your
           <a
             class="text-blue-500"
             href="https://github.com/settings/tokens"
@@ -85,29 +85,37 @@ interface State {
 }
 
 const emit = defineEmits(["close"]);
+const props = defineProps<{ token?: string }>();
 
 const store = useAppStore();
 const state = reactive<State>({
   embedCode: "",
-  token: store.token,
+  token: "",
 });
 
 const generateEmbedCode = () => {
-  const secret = btoa(state.token);
+  const secret = state.token;
   state.embedCode = `<iframe style="width:100%;height:auto;min-width:600px;min-height:400px;" src="${
     window.location.origin
-  }/embed?secret=${secret}#${store.repos.join("&")}&${
-    store.chartMode
-  }" frameBorder="0"></iframe>`;
+  }/embed?secret=${secret}&repos=${store.repos.join(",")}&type=${store.chartMode}&theme=${store.theme}" frameBorder="0"></iframe>`;
 };
 
 onMounted(() => {
+  state.token = props.token || "";
   generateEmbedCode();
 });
 
 watch(
   () => [state.token],
   () => {
+    generateEmbedCode();
+  }
+);
+
+watch(
+  () => props.token,
+  (v) => {
+    state.token = v || "";
     generateEmbedCode();
   }
 );

@@ -18,8 +18,8 @@ dependencies:
     specifier: ^2.0.7
     version: 2.0.11
   '@visactor/vchart-svg-plugin':
-    specifier: ^0.0.2
-    version: 0.0.2(@visactor/vrender-core@1.0.31)(@visactor/vutils@1.0.21)
+    specifier: ^0.0.6
+    version: 0.0.6(@visactor/vrender-core@1.0.33)(@visactor/vutils@1.0.21)
   axios:
     specifier: ^1.0.0
     version: 1.13.2
@@ -765,13 +765,13 @@ packages:
       '@types/webidl-conversions': 7.0.3
     dev: false
 
-  /@visactor/vchart-svg-plugin@0.0.2(@visactor/vrender-core@1.0.31)(@visactor/vutils@1.0.21):
-    resolution: {integrity: sha512-vGx5kWQ+BgSssT5rt0H5aqy0XW/Hh82cjzYogqMBVg5MzHVjZrjGHdKuqxBVq/rhZbWNO5CVDXOrUxRWgDtirg==}
+  /@visactor/vchart-svg-plugin@0.0.6(@visactor/vrender-core@1.0.33)(@visactor/vutils@1.0.21):
+    resolution: {integrity: sha512-PaCtcuNQO7w3wi7iCwoa+d3D12COuegS2kPsC3f6YxPNTvJ1nZ7oDmnHw+7DEWL3zct0eOIjF/Jqb5RWMMZh6Q==}
     peerDependencies:
       '@visactor/vrender-core': '>=0.18.0'
       '@visactor/vutils': '>=0.18.0'
     dependencies:
-      '@visactor/vrender-core': 1.0.31
+      '@visactor/vrender-core': 1.0.33
       '@visactor/vutils': 1.0.21
     dev: false
 
@@ -836,13 +836,6 @@ packages:
       '@visactor/vrender-kits': 1.0.33
       '@visactor/vscale': 1.0.21
       '@visactor/vutils': 1.0.21
-    dev: false
-
-  /@visactor/vrender-core@1.0.31:
-    resolution: {integrity: sha512-4tzN2M5GfI7612IHRiDqUetAjd3J3Ns5gHQxQvmMxismdw7UTrlB8PgnWx9djTYwoxZnhNX0MpPGz9CKgbb7RA==}
-    dependencies:
-      '@visactor/vutils': 1.0.21
-      color-convert: 2.0.1
     dev: false
 
   /@visactor/vrender-core@1.0.33:

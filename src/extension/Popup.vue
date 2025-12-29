@@ -105,7 +105,7 @@ import StarXYChart from "../components/Charts/StarXYChart.vue";
 import TokenSettingDialog from "../components/TokenSettingDialog.vue";
 import {
   convertStarDataToChartData,
-  getReposStarData,
+  getRepoData,
 } from "../../common/chart";
 import toast from "../helpers/toast";
 import useAppStore from "../store";
@@ -156,7 +156,7 @@ const fetchReposStarData = async (repos: string[]) => {
   const reposStarData: RepoStarData[] = [];
 
   try {
-    const data = await getReposStarData(repos, store.token);
+    const data = await getRepoData(repos, store.token);
     for (const d of data) {
       reposStarData.push(d);
     }

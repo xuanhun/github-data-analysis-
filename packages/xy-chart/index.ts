@@ -23,11 +23,11 @@ export interface XYChartConfig {
   theme?: "light" | "dark";
   mode?: string,
   modeParams?: any,
-  lastRecords?: [{
+  lastRecords?: {
     repo: string,
     date: number,
     count: number,
-  }]
+  }[]
 }
 
 
@@ -157,12 +157,8 @@ export const generateDefaultVChartLineSpec = (
   return spec;
 };
 
-const getMarkPoint = (lastRecords?: [{
-  repo: string,
-  date: number,
-  count: number,
-}]) => {
-  if (!lastRecords) {
+const getMarkPoint = (lastRecords?: { repo: string, date: number, count: number, }[], theme?: "dark" | "light") => {
+  if (!lastRecords) { 
     return [];
   }
   const markPoints = lastRecords.map((item) => ({
@@ -186,9 +182,8 @@ const getMarkPoint = (lastRecords?: [{
       // type为'text'时, 额外封装的label
       text: {
         style: {
-          text: `${item.repo}:${item.count}`,
-          fill: 'red',
-          stroke: 'white',
+          text: `${item.count}`,
+          fill: theme === "dark" ? "white" : "red",
         }
       },
     },
@@ -247,7 +242,7 @@ const XYChart = (
   }
   //add mark point
 
-  options.markPoint = getMarkPoint(lastRecords);
+  options.markPoint = getMarkPoint(lastRecords, theme) as any;
   var chart;
 
   if (mode === "node") {
